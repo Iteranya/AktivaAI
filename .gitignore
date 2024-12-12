@@ -6,3 +6,4 @@ log.txt
 *.py[cod]
 Pseudonym.json
 *.json
+!text-default.json
