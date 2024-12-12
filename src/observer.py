@@ -41,6 +41,8 @@ async def bot_behavior(message: discord.Message, client: discord.Client) -> bool
     return False
 
 async def bot_think(message: discord.Message, bot: str) -> None:
+    if isinstance(message.channel,discord.DMChannel):
+        return
     discordo = Discordo(message)
     aicharacter = AICharacter(bot)
     if(discordo.get_thread()!=None):

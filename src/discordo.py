@@ -72,6 +72,8 @@ class Discordo:
         
         for chunk in response_chunks:
             await self.send_webhook_message(chunk, character_avatar_url, character_name)
+        if queue_item.images!=None:
+            await self.send_webhook_message("[System Note: Attachment]",character_avatar_url, character_name,queue_item.images)
 
     async def send_as_user(self,llmreply):
         await self.send_webhook_message(llmreply["simple_message"].content, self.get_user_message_author_avatar(), self.get_user_message_author_name())
@@ -80,7 +82,7 @@ class Discordo:
         await self.send_webhook_message(queue_item.error)
 
         
-    async def send_webhook_message(self,content: str, avatar_url: str=None, username: str=None) -> None:
+    async def send_webhook_message(self,content: str, avatar_url: str=None, username: str=None,images=None) -> None:
         channel = self.get_channel()
         thread = self.get_thread()
         if avatar_url == None:
@@ -91,16 +93,28 @@ class Discordo:
         for webhook in webhook_list:
             if webhook.name == "AktivaAI":
                     if thread != None:
-                        await webhook.send(content, username=username, avatar_url=avatar_url, thread=thread)
+                        if images!=None:
+                            await webhook.send(content, username=username, avatar_url=avatar_url, thread=thread,embeds=images)
+                        else:
+                            await webhook.send(content, username=username, avatar_url=avatar_url, thread=thread)
                         return
                     else:
-                        await webhook.send(content, username=username, avatar_url=avatar_url)
+                        if images!=None:
+                            await webhook.send(content, username=username, avatar_url=avatar_url,embeds=images)
+                        else:
+                            await webhook.send(content, username=username, avatar_url=avatar_url)
                     return
         webhook = await channel.create_webhook(name="AktivaAI")
         if thread!=None:
-            await webhook.send(content, username=username, avatar_url=avatar_url, thread=thread)
+            if images!=None:
+                await webhook.send(content, username=username, avatar_url=avatar_url, thread=thread,files=images)
+            else:
+                await webhook.send(content, username=username, avatar_url=avatar_url, thread=thread)
         else:
-            await webhook.send(content, username=username, avatar_url=avatar_url)
+            if images!=None:
+                 webhook.send(content, username=username, avatar_url=avatar_url,files=images)
+            else:
+                await webhook.send(content, username=username, avatar_url=avatar_url)
         return
 
     async def initialize_channel_history(self, limit: int = 50):

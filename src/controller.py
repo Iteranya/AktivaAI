@@ -8,6 +8,7 @@ from src.prompts import PromptEngineer
 from src.llm import LlmApi
 from src.models  import QueueItem
 from src.multimodal import MultiModal
+from src.duckduckgo import Bebek
 
 import traceback
 inline_comprehension = True
@@ -26,18 +27,17 @@ async def think() -> None:
         if message_content.startswith("//"):
             pass
         elif message_content.startswith("^"):
-            message_content = message_content.replace("^","")
-            message_content = message_content.replace(str(bot.name),"")
-            message_content = message_content.strip()
-            image_result =""
             top_result = ""
-            message_content = extract_between_quotes(message_content)
-            if "news" in discordo.get_user_message_content():
-                top_result = await get_news(message_content)
-            elif "image" in discordo.get_user_message_content() or "picture" in discordo.get_user_message_content():
-                image_result = await get_image(message_content)
+            image_result = ""
+            image_files = None
+            bebek = Bebek(message_content)
+            if "news" in message_content:
+                top_result = await bebek.get_news()
+            elif "image" in message_content or "picture" in message_content:
+                image_result = await bebek.get_image_link()
+                # image_files = await bebek.get_images()
             else:
-                top_result = await get_top_search_result(message_content)
+                top_result = await bebek.get_top_search_result()
             await send_grounded_message(bot,discordo,dimension,str(top_result),image_result)
         elif images:
             if(config.florence):
@@ -62,16 +62,17 @@ async def send_multimodal_message(bot: AICharacter,discordo: Discordo,dimension:
         await discordo.send(bot,queueItem)
         return
 
-async def send_grounded_message(bot: AICharacter,discordo: Discordo,dimension:Dimension,top_message:str,images=""):
+async def send_grounded_message(bot: AICharacter,discordo: Discordo,dimension:Dimension,top_message:str,images=None):
     print("Grounding Processing...")
     if top_message!="":
         discordo.history+="\n[System Note: Web Search result: "+top_message+"]"
+
     print("Chat Completion Processing...")
     prompter = PromptEngineer(bot,discordo,dimension)
     queueItem = QueueItem(prompt=await prompter.create_text_prompt())
     llmapi = LlmApi(queueItem,prompter)
     queueItem = await llmapi.send_to_model_queue()
-    queueItem.result+="\n"+images
+    queueItem.images = images
     await discordo.send(bot,queueItem)
     return
 
@@ -83,23 +84,6 @@ async def send_llm_message(bot: AICharacter,discordo: Discordo,dimension:Dimensi
     queueItem = await llmapi.send_to_model_queue()
     await discordo.send(bot,queueItem)
     return
-
-# async def send_lam_message(message, json_card):
-#     print("LAM Processing...")
-#     context = await history.get_channel_history(message.channel)
-#     thoughts = "Alright then..."
-#     action_bot_prompt = await qutil.get_action_prompt_queue_item(context, thoughts, message, json_card)
-#     lam_response = await apiconfig.send_to_model_queue(action_bot_prompt)
-#     await lam.process_action(lam_response, message)
-#     return
-
-
-def sanitize_string(input_string):
-
-    sanitized_string = re.sub(r'[^\x00-\x7F]+', '', input_string)
-    # Remove unwanted symbols (keeping letters, numbers, spaces, and basic punctuation)
-    sanitized_string = re.sub(r'[^a-zA-Z0-9\s.,!?\'\"-]', '', sanitized_string)
-    return sanitized_string.strip()
 
 async def get_top_search_result(query: str, max_results: int = 5) -> dict:
     try:
