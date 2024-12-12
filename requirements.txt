@@ -1,0 +1,9 @@
+llama-cpp-python
+llama-cpp-python[server]
+discord.py
+httpx
+pillow
+requests
+aiohttp
+transformers
+huggingface_hub

@@ -1,0 +1,8 @@
+./xtts
+.env
+.venv
+venv
+log.txt
+*.py[cod]
+Pseudonym.json
+*.json
