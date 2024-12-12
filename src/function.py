@@ -99,3 +99,53 @@ async def get_bot_list() -> list[str]:
                     print(f"Error parsing {filename}: {e}")
 
     return names
+
+async def get_bot_whitelist(channel_name:str) -> list[str]:
+    names = []
+    folder_path = "./characters"
+    # Iterate over each file in the directory
+    for filename in os.listdir(folder_path):
+        file_path = os.path.join(folder_path, filename)
+        if filename.endswith('.json'):
+            # Read the JSON file
+            with open(file_path, 'r') as f:
+                try:
+                    # Load JSON data
+                    data = json.load(f)
+                    # Extract the name field and append to names list
+                    whitelist = data.get('whitelist',None)
+                    if whitelist!=None:
+                        if channel_name in whitelist:
+                            names.append(data.get('name'))
+                        else:
+                            pass
+                    else:
+                        name = data.get('name')
+                        if name:
+                            names.append(name)
+                        else:
+                            pass
+                except json.JSONDecodeError as e:
+                    print(f"Error parsing {filename}: {e}")
+
+    return names
+
+async def get_channel_whitelist(channel_name:str) -> list[str]:
+    names = []
+    folder_path = "./channels"
+    # Iterate over each file in the directory
+    file_path = os.path.join(folder_path, channel_name+".json")
+    if channel_name.endswith('.json'):
+        # Read the JSON file
+        with open(file_path, 'r') as f:
+            try:
+                # Load JSON data
+                data = json.load(f)
+                # Extract the name field and append to names list
+                whitelist = data.get('whitelist',None)
+                return whitelist
+            except json.JSONDecodeError as e:
+                print(f"Error parsing {channel_name}: {e}")
+
+    return names
+

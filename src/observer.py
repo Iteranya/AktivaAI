@@ -11,7 +11,11 @@ from src.dimension import Dimension
 ## Also the gateway to LAM
 
 async def bot_behavior(message: discord.Message, client: discord.Client) -> bool:
+    if isinstance(message.channel,discord.DMChannel):
+        return True
     botlist = await function.get_bot_list()
+    whitelist = await function.get_channel_whitelist(message.channel.name)
+    # botlist = await function.get_bot_whitelist(message.channel.name)
     reply = await function.get_reply(message, client)
     replied = function.get_replied_user(reply)
     # TODO: Specifically work that janky ass replied[0] thing
@@ -20,7 +24,13 @@ async def bot_behavior(message: discord.Message, client: discord.Client) -> bool
     if reply is not None and replied:
         for bot in list(botlist):
             if str(replied[0])==bot:
-                await bot_think(message, bot.lower())
+                if whitelist != None:
+                    if bot in whitelist:
+                        await bot_think(message, bot.lower())
+                    else: 
+                        return True
+                else:
+                    await bot_think(message, bot.lower())
                 return True
         
     #The Fuzzy Logic Part~
@@ -28,7 +38,13 @@ async def bot_behavior(message: discord.Message, client: discord.Client) -> bool
         text = message.content
         for bot in botlist:
             if re.search(bot.lower(), text.lower()):
-                await bot_think(message, bot.lower())
+                if whitelist != None:
+                    if bot in whitelist:
+                        await bot_think(message, bot.lower())
+                    else: 
+                        return True
+                else:
+                    await bot_think(message, bot.lower())
                 return True
 
         # Check if contains the word 'Debugus Starticus!'

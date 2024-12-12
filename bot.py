@@ -82,6 +82,11 @@ def setup_commands():
         response = main.get_global(interaction)
         await interaction.response.send_message(response, ephemeral=True)
 
+    @group.command(name="whitelist", description="Add Characters")
+    async def aktiva_whitelist(interaction: discord.Interaction, character_name:str):
+        response = main.whitelist(interaction,character_name)
+        await interaction.response.send_message(response, ephemeral=True)
+
     tree.add_command(group)
 
 @client.event

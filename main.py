@@ -89,6 +89,20 @@ def get_global(interaction: discord.Interaction):
     data = createOrFetchJson(interaction.channel.name)
     return data["global"]
 
+def whitelist(interaction: discord.Interaction, character_name: str):
+    # Fetch or create the JSON data
+    data = createOrFetchJson(interaction.channel.name)
+
+    # Initialize the "whitelist" key if it doesn't exist
+    if "whitelist" not in data:
+        data["whitelist"] = []
+
+    # Add the character to the whitelist if not already present
+    if character_name not in data["whitelist"]:
+        data["whitelist"].append(character_name)
+        replaceJsonContent(interaction.channel.name,data)
+    return data["whitelist"]
+
 
 async def delete_message_context(interaction: discord.Interaction, message: discord.Message):
     await delete(message,interaction)
