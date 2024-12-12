@@ -7,3 +7,4 @@ log.txt
 Pseudonym.json
 *.json
 !text-default.json
+!default.json
