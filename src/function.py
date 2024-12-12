@@ -130,22 +130,22 @@ async def get_bot_whitelist(channel_name:str) -> list[str]:
 
     return names
 
-async def get_channel_whitelist(channel_name:str) -> list[str]:
-    names = []
-    folder_path = "./channels"
-    # Iterate over each file in the directory
-    file_path = os.path.join(folder_path, channel_name+".json")
-    if channel_name.endswith('.json'):
-        # Read the JSON file
-        with open(file_path, 'r') as f:
-            try:
-                # Load JSON data
-                data = json.load(f)
-                # Extract the name field and append to names list
-                whitelist = data.get('whitelist',None)
-                return whitelist
-            except json.JSONDecodeError as e:
-                print(f"Error parsing {channel_name}: {e}")
+async def get_channel_whitelist(channel_name: str) -> list[str] | None:
+    file_path = f"./channels/{channel_name}.json"
 
-    return names
+    # Check if the file exists
+    if not os.path.exists(file_path):
+        return None
+
+    # Attempt to read and parse the JSON file
+    try:
+        with open(file_path, 'r') as f:
+            data = json.load(f)
+            # Extract the 'whitelist' field, if present
+            return data.get('whitelist', None)
+    except json.JSONDecodeError as e:
+        print(f"Error parsing {channel_name}: {e}")
+
+    return None
+
 
