@@ -75,8 +75,8 @@ class Discordo:
         if queue_item.images!=None:
             await self.send_webhook_message("[System Note: Attachment]",character_avatar_url, character_name,queue_item.images)
 
-    async def send_as_user(self,llmreply):
-        await self.send_webhook_message(llmreply["simple_message"].content, self.get_user_message_author_avatar(), self.get_user_message_author_name())
+    async def send_as_user(self,content):
+        await self.send_webhook_message(content, self.get_user_message_author_avatar(), self.get_user_message_author_name())
 
     async def send_as_system(self,queue_item:QueueItem):
         await self.send_webhook_message(queue_item.error)

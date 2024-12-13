@@ -38,7 +38,7 @@ async def bot_behavior(message: discord.Message, client: discord.Client) -> bool
         text = message.content
         for bot in botlist:
             if re.search(bot.lower(), text.lower()):
-                if whitelist != None:
+                if whitelist != None or config.blacklist_mode==True:
                     if bot in whitelist:
                         await bot_think(message, bot.lower())
                     else: 
