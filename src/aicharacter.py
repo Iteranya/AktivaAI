@@ -7,13 +7,13 @@ import json
 class AICharacter:
     def __init__(self, bot_name:str):
         self.bot_name = bot_name
-        self.char_dict = self.get_card(bot_name)
-        self.name:str = self.char_dict["name"]
-        self.persona:str = self.char_dict["persona"]
-        self.examples:list = self.char_dict["examples"]
-        self.instructions:str = self.char_dict["instructions"]
-        self.avatar:str = self.char_dict["image"]
-        self.info:str = self.char_dict["info"]
+        self.char_dict:dict = self.get_card(bot_name)
+        self.name:str = self.get_name()
+        self.persona:str = self.get_persona()
+        self.examples:list = self.get_examples()
+        self.instructions:str = self.get_instructions()
+        self.avatar:str = self.get_avatar()
+        self.info:str = self.get_info()
 
     def getDictFromJson(self,json_path):
         with open(json_path, 'r') as f:
@@ -39,7 +39,7 @@ class AICharacter:
         except IOError as e:
             print(f"I/O error occurred while writing to {json_path}: {e}")
 
-    def get_card(self,bot_name: str):
+    def get_card(self,bot_name: str)->dict:
         directory = "./characters"
         for filename in os.listdir(directory):
             if filename.endswith(".json"):
@@ -85,31 +85,39 @@ class AICharacter:
 
     def get_name(self) -> str:
         """Getter for character name."""
-        return self.name
+        name = self.char_dict.get("name","")
+        return name
 
     def get_persona(self) -> str:
         """Getter for character persona."""
-        return self.persona
+        persona = self.char_dict.get("persona",None)
+        if persona ==None:
+            data:dict = self.char_dict.get("data",None)
+            if data != None:
+                persona = data.get("description","")
+            else:
+                persona = self.char_dict.get("description","")
+        return persona
 
     def get_examples(self) -> list:
         """Getter for character examples."""
-        return self.examples
+        examples = self.char_dict.get("examples","")
+        return examples
 
     def get_instructions(self) -> str:
         """Getter for character instructions."""
-        return self.instructions
+        instruction = self.char_dict.get("instructions","")
+        return instruction
 
     def get_avatar(self) -> str:
         """Getter for character avatar."""
-        return self.avatar
+        avatar = self.char_dict.get("image","")
+        return avatar
 
     def get_info(self) -> str:
         """Getter for character info."""
-        return self.info
-
-    def get_json_path(self) -> str:
-        """Getter for JSON file path."""
-        return self.json_path
+        info = self.char_dict.get("info","")
+        return info
 
     # Setters
     def set_name(self, name: str):

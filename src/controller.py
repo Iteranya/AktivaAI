@@ -32,8 +32,7 @@ async def think() -> None:
             pass
         elif message_content.startswith("^"):
             top_result = ""
-            image_result = ""
-            image_files = None
+            image_result = None
             bebek = Bebek(message_content)
             if "news" in message_content:
                 top_result = await bebek.get_news()

@@ -14,7 +14,7 @@ class PromptEngineer:
         self.api:dict = self.set_api(llm_setting)
 
     async def create_text_prompt(self) -> str:
-        jb = self.bot.get_instructions()
+        jb = self.bot.instructions
         character = await self.bot.get_character_prompt()
         #jb = "" # Toggle this to disable JB
         globalvar = self.dimension.getDict().get("global", "")

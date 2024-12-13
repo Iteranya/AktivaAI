@@ -36,6 +36,8 @@ async def bot_behavior(message: discord.Message, client: discord.Client) -> bool
     #The Fuzzy Logic Part~
     if message.webhook_id is None:
         text = message.content
+        if text.startswith("//"):
+            return True
         for bot in botlist:
             if re.search(bot.lower(), text.lower()):
                 if whitelist != None or config.blacklist_mode==True:
