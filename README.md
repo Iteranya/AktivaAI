@@ -90,16 +90,6 @@ Refer to README.md file in the characters folder.
   - As in like, I did not make any proper Github Commit Comment :v
   - Honestly this whole thing started as a joke, if you see the Read Me file, it's all just irony
   - I never expected it to work this well
-- No 3rd Party AI Support
-  - WON'T FIX!!!
-  - 1. I hate Open AI, Anthropic, and AI Company Hypocrites in Principle.
-  - 2. Technical limitation:
-    - This Discord Bot leverages custom chat structure for maximum group chat support, it DOES NOT work with Chat Completion
-    - Only works with Text Generation Model
-    - Only NovelAI provides Text Generation Model service. Open AI, Anthropic, and Google only provides Chat Completion model.
-    - YES it's DIFFERENT.
-    - NovelAI support coming soon once I saved up enough money to buy Novel AI subscription
-    - Please donate if you want support, thank.
 
 Yeah that's all the current issue. Let me know if there's another one, have fun then~
 
