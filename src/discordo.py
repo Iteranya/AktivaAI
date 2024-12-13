@@ -53,7 +53,7 @@ class Discordo:
     
     async def send(self,bot,queue_item:QueueItem):
         try:
-            await self.raw_message.add_reaction('✅')
+            await self.raw_message.remove_reaction('✨',config.bot_user)
         except Exception as e:
             print("Hi!")
       

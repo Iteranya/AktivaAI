@@ -20,6 +20,7 @@ florence_processor = None
 bot_display_name = "Aktiva-AI"
 bot_default_avatar = "https://i.imgur.com/mxlcovm.png"
 
+bot_user = None
 text_api: dict = {}
 image_api: dict = {}
 immersive_mode = True

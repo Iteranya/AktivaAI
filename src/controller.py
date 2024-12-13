@@ -19,6 +19,10 @@ async def think() -> None:
         discordo:Discordo = content["discordo"]
         bot:AICharacter = content["bot"]
         dimension:Dimension = content["dimension"]
+        try:
+            await discordo.raw_message.add_reaction('✨')
+        except Exception as e:
+            print("Hi!")
         images = await discordo.process_attachment()
         history = await discordo.initialize_channel_history()
         message_content = discordo.get_user_message_content()

@@ -93,7 +93,7 @@ def setup_commands():
 async def on_ready():
     # Let owner known in the console that the bot is now running!
     print(f'Discord Bot is Loading...')
-
+    config.bot_user = client.user
     # Oh right, I have logging...
     logging.basicConfig(level=logging.DEBUG)
 
