@@ -64,7 +64,7 @@ Requires Koboldcpp for back end, download it here:
 To run this bot:
 
 1. Load the LLM model of your choice in Koboldcpp (Make sure it's marked as not safe for audience)
-2. Download this repository [DiscordBot](https://github.com/Iteranya/DiscordBot)
+2. Download this repository [Aktiva AI](https://github.com/Iteranya/AktivaAI/)
 3. Make a .env file as written in example.env
 4. Install the requirements. I suggest using an Anaconda or Miniconda instance.
     ```pip install -r requirements.txt```
