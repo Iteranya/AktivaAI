@@ -35,18 +35,6 @@
 - Yes! You can delete your character's response!
 - No! You cannot regenerate character's response, I should really add that feature
 
-### Pseudo Large Action Model Tech Demo!!!
-- Uses GBNF Scripting to let the AI understand simple commmand.
-- Sample command included in lam.py.
-- Use > at the beginning your message (while also mentioning a bot's name) to trigger the LAM
-- There's not many feature since it was only implemented a few hours ago...
-- Honestly not a feature,  more like a neat little trick the AI can do..
-- (This is partly another joke about Rabbit R1)
-- ((All available commands are written in lam.py))
-- (((Grammar Creation still required when adding new commmand)))
-- ((((Character need to be told about the command thing in their definition to properly use it))))
-- (((((Remind me to add proper intergration, this is still barebones)))))
-
 ## Prerequisites
 
 ### Large Language Model
