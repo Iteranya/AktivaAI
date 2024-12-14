@@ -64,7 +64,6 @@ class Discordo:
         
     async def send_as_bot(self,queue_item:QueueItem,bot: AICharacter):
         response = queue_item.result
-        response = textutil.clean_text(response)
         response_chunks = [response[i:i+1500] for i in range(0, len(response), 1500)]
 
         character_name = bot.name  # Placeholder for character name
@@ -85,7 +84,8 @@ class Discordo:
     async def send_webhook_message(self,content: str, avatar_url: str=None, username: str=None,images=None) -> None:
         channel = self.get_channel()
         thread = self.get_thread()
-        if avatar_url == None:
+        print("Check Avatar URL:"+str(avatar_url))
+        if avatar_url == None or str(avatar_url) == "none":
             avatar_url = self.default_character_url
         if username == None:
             username = self.default_character_name

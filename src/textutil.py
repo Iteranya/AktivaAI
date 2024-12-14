@@ -60,3 +60,41 @@ def remove_fluff(text: str) -> str:
         text = re.sub(last_fluff, '', text, count=1)
     
     return text.strip()  # Remove any extra whitespace
+
+def clean_links(text):
+    
+    # Remove common tracking parameters
+    tracking_params = [
+        'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 
+        'fbclid', 'gclid', 'ref', 'referrer', 'ref_url', 'ref_src'
+    ]
+    
+    def clean_single_link(url):
+        # Remove duplicate protocols
+        url = re.sub(r'^(https?://)(https?://)', r'\1', url)
+        
+        # Remove tracking parameters
+        for param in tracking_params:
+            url = re.sub(rf'([?&]){param}=[^&]*&?', r'\1', url)
+        
+        # Remove trailing '?' or '&' if left after parameter removal
+        url = re.sub(r'[?&]$', '', url)
+        
+        # Remove 'www.' prefix
+        url = re.sub(r'^(https?://)(www\.)', r'\1', url)
+        
+        # Remove trailing slash for non-directory URLs
+        if url.count('/') <= 3:  # Keeps slashes for deeper paths
+            url = url.rstrip('/')
+        
+        return url
+    
+    # Find and clean URLs in the text
+    def replace_urls(match):
+        return clean_single_link(match.group(0))
+    
+    # Regex to match URLs
+    url_pattern = r'https?://\S+'
+    cleaned_text = re.sub(url_pattern, replace_urls, text)
+    
+    return cleaned_text

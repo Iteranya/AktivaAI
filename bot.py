@@ -29,10 +29,13 @@ warnings.filterwarnings("ignore", category=UserWarning, module="torch.utils")
 
 load_dotenv()
 discord_token: str | None = os.getenv("DISCORD_TOKEN")
+openrouter_token: str | None = os.getenv("OPENROUTER_TOKEN")
 if discord_token is None:
     raise RuntimeError("$DISCORD_TOKEN env variable is not set!")
-
+if openrouter_token is None:
+    openrouter_token=""
 client = config.client
+config.openrouter_token = openrouter_token
 
 def fixed_get_imports(filename: str | os.PathLike) -> list[str]:
     # if not str(filename).endswith("modeling_florence2.py"):
@@ -82,11 +85,25 @@ def setup_commands():
         response = main.get_global(interaction)
         await interaction.response.send_message(response, ephemeral=True)
 
-    @group.command(name="whitelist", description="Add Characters")
-    async def aktiva_whitelist(interaction: discord.Interaction, character_name:str):
-        response = main.whitelist(interaction,character_name)
+    @group.command(name="set_whitelist", description="Add Characters, Comma Separated")
+    async def aktiva_set_whitelist(interaction: discord.Interaction, character_name:str):
+        response = main.set_whitelist(interaction,character_name)
         await interaction.response.send_message(response, ephemeral=True)
 
+    @group.command(name="get_whitelist", description="Show Available Characters")
+    async def aktiva_get_whitelist(interaction: discord.Interaction):
+        response = main.get_whitelist(interaction)
+        await interaction.response.send_message(response, ephemeral=True)
+
+    @group.command(name="clear_whitelist", description="Clear Whitelist")
+    async def aktiva_clear_whitelist(interaction: discord.Interaction):
+        response = main.clear_whitelist(interaction)
+        await interaction.response.send_message(response, ephemeral=True)
+
+    @group.command(name="remove_whitelist", description="Remove a Character")
+    async def aktiva_remove_whitelist(interaction: discord.Interaction, character_name:str):
+        response = main.delete_whitelist(interaction,character_name)
+        await interaction.response.send_message(response, ephemeral=True)
     tree.add_command(group)
 
 @client.event

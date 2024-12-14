@@ -11,6 +11,8 @@ global character_card
 
 global immersive_mode
 global blacklist_mode
+global openrouter_token
+global safesearch
 
 queue_to_process_everything = asyncio.Queue()
 
@@ -24,7 +26,9 @@ bot_user = None
 text_api: dict = {}
 image_api: dict = {}
 immersive_mode = True
-blacklist_mode = False
+blacklist_mode = True
+openrouter_token =""
+safesearch=None
 
 intents: discord.Intents = discord.Intents.all()
 intents.message_content = True

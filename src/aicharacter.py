@@ -131,7 +131,11 @@ class AICharacter:
         """Getter for character avatar."""
         avatar = self.char_dict.get("image","")
         if avatar == "":
-                avatar = self.char_dict.get("avatar","")
+                data:dict = self.char_dict.get("data",None)
+                if data != None:
+                    avatar = data.get("avatar","")
+                else:
+                    avatar = self.char_dict.get("avatar","")
         return avatar
 
     def get_info(self) -> str:

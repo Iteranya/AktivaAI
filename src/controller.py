@@ -9,6 +9,7 @@ from src.llm import LlmApi
 from src.models  import QueueItem
 from src.multimodal import MultiModal
 from src.duckduckgo import Bebek
+import src.textutil as textutil
 
 import traceback
 inline_comprehension = True
@@ -18,30 +19,36 @@ async def think() -> None:
         content = await config.queue_to_process_everything.get()
         discordo:Discordo = content["discordo"]
         bot:AICharacter = content["bot"]
+        await discordo.initialize_channel_history()
         dimension:Dimension = content["dimension"]
+
         try:
             await discordo.raw_message.add_reaction('✨')
         except Exception as e:
             print("Hi!")
         images = await discordo.process_attachment()
-        history = await discordo.initialize_channel_history()
         message_content = discordo.get_user_message_content()
+        safesearch='on'
         # if message_content.startswith(">"):
         #     await send_lam_message(bot,discordo,dimension)
         if message_content.startswith("//"):
             pass
         elif message_content.startswith("^"):
             top_result = ""
+            video_result = ""
             image_result = None
             bebek = Bebek(message_content)
             if "news" in message_content:
-                top_result = await bebek.get_news()
-            elif "image" in message_content or "picture" in message_content:
-                image_result = await bebek.get_image_link()
-                
+                top_result = await bebek.get_news()                
             else:
                 top_result = await bebek.get_top_search_result()
-            await send_grounded_message(bot,discordo,dimension,str(top_result),image_result)
+            if "image" in message_content or "picture" in message_content:
+                    if discordo.get_channel().is_nsfw == True:
+                        safesearch='off'
+                    image_result = await bebek.get_image_link(safesearch)
+            elif "video" in message_content:
+                    video_result = await bebek.get_video_link()
+            await send_grounded_message(bot,discordo,dimension,str(top_result),image_result,video_result)
         elif images:
             if(config.florence):
                 multimodal = MultiModal(discordo)
@@ -67,9 +74,9 @@ async def send_multimodal_message(bot: AICharacter,discordo: Discordo,dimension:
         await discordo.send(bot,queueItem)
         return
 
-async def send_grounded_message(bot: AICharacter,discordo: Discordo,dimension:Dimension,top_message:str,images=None):
+async def send_grounded_message(bot: AICharacter,discordo: Discordo,dimension:Dimension,top_message:str,images=None,videos=""):
     print("Grounding Processing...")
-    if top_message!="":
+    if top_message!="" and top_message!=None:
         discordo.history+="\n[System Note: Web Search result: "+top_message+"]"
 
     print("Chat Completion Processing...")
@@ -77,7 +84,11 @@ async def send_grounded_message(bot: AICharacter,discordo: Discordo,dimension:Di
     queueItem = QueueItem(prompt=await prompter.create_text_prompt())
     llmapi = LlmApi(queueItem,prompter)
     queueItem = await llmapi.send_to_model_queue()
-    queueItem.images = images
+    if images!="" and images!=None:
+        textutil.clean_links(queueItem.result)
+        queueItem.images = images
+    if videos!="" and videos!=None:
+         queueItem.result+="\n"+videos
     await discordo.send(bot,queueItem)
     return
 

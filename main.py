@@ -89,7 +89,7 @@ def get_global(interaction: discord.Interaction):
     data = createOrFetchJson(interaction.channel.name)
     return data["global"]
 
-def whitelist(interaction: discord.Interaction, character_name: str):
+def add_whitelist(interaction: discord.Interaction, character_name: str):
     # Fetch or create the JSON data
     data = createOrFetchJson(interaction.channel.name)
 
@@ -103,6 +103,44 @@ def whitelist(interaction: discord.Interaction, character_name: str):
         replaceJsonContent(interaction.channel.name,data)
     return data["whitelist"]
 
+def clear_whitelist(interaction: discord.Interaction):
+    # Fetch or create the JSON data
+    data = createOrFetchJson(interaction.channel.name)
+    
+    # Clear the whitelist
+    data["whitelist"] = []
+    replaceJsonContent(interaction.channel.name, data)
+    return data["whitelist"]
+
+def set_whitelist(interaction: discord.Interaction, whitelist_string: str):
+    # Fetch or create the JSON data
+    data = createOrFetchJson(interaction.channel.name)
+    
+    # Split the string by comma and strip whitespace
+    whitelist = [name.strip() for name in whitelist_string.split(',')]
+    
+    # Set the whitelist
+    data["whitelist"] = whitelist
+    replaceJsonContent(interaction.channel.name, data)
+    return data["whitelist"]
+
+def delete_whitelist(interaction: discord.Interaction, character_name: str):
+    # Fetch or create the JSON data
+    data = createOrFetchJson(interaction.channel.name)
+    
+    # Remove the character from the whitelist if present
+    if "whitelist" in data and character_name in data["whitelist"]:
+        data["whitelist"].remove(character_name)
+        replaceJsonContent(interaction.channel.name, data)
+    
+    return data["whitelist"]
+
+def get_whitelist(interaction: discord.Interaction):
+    # Fetch or create the JSON data
+    data = createOrFetchJson(interaction.channel.name)
+    
+    # Return the whitelist, defaulting to an empty list if not present
+    return data.get("whitelist", [])
 
 async def delete_message_context(interaction: discord.Interaction, message: discord.Message):
     await delete(message,interaction)

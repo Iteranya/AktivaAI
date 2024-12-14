@@ -69,6 +69,7 @@ class LlmApi:
         if cleaned_data.endswith("*.") or cleaned_data.endswith("*"):
             if random.choice([True, False]):  # 50/50 chance
                 cleaned_data = textutil.remove_fluff(cleaned_data)
+        cleaned_data = textutil.clean_text(cleaned_data)
         llm_message = cleaned_data
         
         return llm_message
