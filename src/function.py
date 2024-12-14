@@ -90,9 +90,16 @@ async def get_bot_list() -> list[str]:
                     # Load JSON data
                     data = json.load(f)
                     # Extract the name field and append to names list
-                    name = data.get('name')
+                    card_data = data.get('data')
+                    name  = data.get('name')
                     if name:
                         names.append(name)
+                    elif card_data:
+                        name = card_data.get("name")
+                        if name:
+                            names.append(name)
+                        else:
+                            pass
                     else:
                         pass
                 except json.JSONDecodeError as e:

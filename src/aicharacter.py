@@ -7,7 +7,7 @@ import json
 class AICharacter:
     def __init__(self, bot_name:str):
         self.bot_name = bot_name
-        self.char_dict:dict = self.get_card(bot_name)
+        self.char_dict:dict = self.replace_placeholders(self.get_card(bot_name),bot_name,"User")
         self.name:str = self.get_name()
         self.persona:str = self.get_persona()
         self.examples:list = self.get_examples()
@@ -50,12 +50,26 @@ class AICharacter:
                         data = json.load(file)
 
                     # Check if 'name' field matches target_name
-                    if "name" in data and str(data["name"]).lower() == str(bot_name).lower():
+                    if "data" in data and str(data["data"]["name"]).lower() == str(bot_name).lower():
+                        return data["data"]
+                    elif "name" in data and str(data["name"]).lower() == str(bot_name).lower():
                         return data
+                    
                 except json.JSONDecodeError:
                     print(f"Error decoding JSON in file: {filepath}")
                 except Exception as e:
                     print(f"Error processing file {filepath}: {e}")
+
+    def replace_placeholders(self,data: dict, bot_name: str, user_name: str) -> dict:
+
+        # Convert dict to JSON string
+        json_str = json.dumps(data)
+        
+        # Replace placeholders in the string
+        replaced_str = json_str.replace('{{char}}', bot_name).replace('{{user}}', user_name)
+        
+        # Parse back to dictionary
+        return json.loads(replaced_str)
 
     async def get_character_prompt(self) -> str | None:
         # Your name is <name>.
@@ -86,6 +100,10 @@ class AICharacter:
     def get_name(self) -> str:
         """Getter for character name."""
         name = self.char_dict.get("name","")
+        if name == "":
+            data:dict = self.char_dict.get("data",None)
+            if data!=None:
+                name = data.get("name","")
         return name
 
     def get_persona(self) -> str:
@@ -112,6 +130,8 @@ class AICharacter:
     def get_avatar(self) -> str:
         """Getter for character avatar."""
         avatar = self.char_dict.get("image","")
+        if avatar == "":
+                avatar = self.char_dict.get("avatar","")
         return avatar
 
     def get_info(self) -> str:
