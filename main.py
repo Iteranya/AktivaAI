@@ -169,7 +169,7 @@ async def character_info():
     result_str = "\n".join([f"{name}: {info}" for name, info in character.items()])
     return result_str
 
-async def change_text_evaluator_model(model:str):
+def change_text_evaluator_model(model:str):
     config.text_evaluator_model = model
     
 
