@@ -28,31 +28,29 @@ class Discordo:
     async def save_attachment(self):
         if self.raw_message.attachments:
             attachment = self.raw_message.attachments[0]
-            
+
             # Create the attachments directory if it doesn't exist
             attachments_dir = os.path.join(os.getcwd(), 'attachments')
             os.makedirs(attachments_dir, exist_ok=True)
-            
-            # Generate a unique filename to prevent overwriting
+
+            # Generate the base filepath
             filename = attachment.filename
             filepath = os.path.join(attachments_dir, filename)
-            
-            # Ensure unique filename by adding a counter if needed
-            counter = 1
-            while os.path.exists(filepath):
-                name, ext = os.path.splitext(filename)
-                filepath = os.path.join(attachments_dir, f"{name}_{counter}{ext}")
-                counter += 1
-            
-            # Save the attachment
+
+            # Check if the file already exists
+            if os.path.exists(filepath):
+                # Return the existing filepath if it exists
+                return filepath
+
+            # Save the new attachment if it doesn't exist
             with open(filepath, 'wb') as f:
                 attachment_bytes = await attachment.read()
                 f.write(attachment_bytes)
-            
+
             return filepath
         else:
             return None
-        
+            
 
     # Get Raw Message
     def get_raw_user_message(self):

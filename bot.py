@@ -129,14 +129,14 @@ async def on_ready():
 
     # Command to Edit Message (You Right Click On It)
     edit_message = discord.app_commands.ContextMenu(
-    name='Edit Message',
+    name='Edit Bot Message',
     callback=main.edit_message_context,
     type=discord.AppCommandType.message
     )
 
     # Command to Delete Message (You Right Click On It)
     delete_message = discord.app_commands.ContextMenu(
-        name='Delete Message',
+        name='Delete Bot Message',
         callback=main.delete_message_context,
         type=discord.AppCommandType.message
     )
