@@ -115,13 +115,22 @@ def clear_whitelist(interaction: discord.Interaction):
 def set_whitelist(interaction: discord.Interaction, whitelist_string: str):
     # Fetch or create the JSON data
     data = createOrFetchJson(interaction.channel.name)
-    
-    # Split the string by comma and strip whitespace
-    whitelist = [name.strip() for name in whitelist_string.split(',')]
-    
-    # Set the whitelist
-    data["whitelist"] = whitelist
+
+    # Split the input string by comma and strip whitespace
+    new_whitelist_entries = [name.strip() for name in whitelist_string.split(',')]
+
+    # Check if a whitelist already exists; if not, initialize it
+    existing_whitelist = data.get("whitelist", [])
+
+    # Combine the existing whitelist with new entries, avoiding duplicates
+    combined_whitelist = list(set(existing_whitelist + new_whitelist_entries))
+
+    # Update the whitelist in the data object
+    data["whitelist"] = combined_whitelist
+
+    # Save the updated data back to JSON
     replaceJsonContent(interaction.channel.name, data)
+
     return data["whitelist"]
 
 def delete_whitelist(interaction: discord.Interaction, character_name: str):
@@ -171,7 +180,7 @@ async def character_info():
 
 def change_text_evaluator_model(model:str):
     config.text_evaluator_model = model
-    
+
 
 async def get_bot():
     folder_path = "./characters"

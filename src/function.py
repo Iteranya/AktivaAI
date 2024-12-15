@@ -4,6 +4,7 @@ import re
 import util
 import os
 import json
+import aiohttp
 
 
 async def get_reply(message: discord.Message, client: discord.Client):
@@ -53,20 +54,6 @@ async def get_reply(message: discord.Message, client: discord.Client):
             return reply
 
     return reply
-
-
-def get_user_list(history: str) -> list[str]:
-    # Define the regex pattern
-    pattern = r'(?<=\n)[\w-]+(?=:)'
-    
-    # Find all matches using the regex pattern
-    matches = re.findall(pattern, history, flags=re.MULTILINE)
-    
-    # Convert the list of matches to a set to remove duplicates
-    unique_usernames = [username for username in set(matches)]
-    
-    # Convert the set back to a sorted list (if sorting is needed)
-    return sorted(list(unique_usernames))
 
 def get_replied_user(reply: str) -> list[str]:
     pattern = r'[\w-]+(?=:)'
@@ -156,3 +143,58 @@ async def get_channel_whitelist(channel_name: str) -> list[str] | None:
     return None
 
 
+async def save_character_json(attachment:discord.Attachment):
+    # Create the attachments directory if it doesn't exist
+
+        attachments_dir = os.path.join(os.getcwd(), 'characters')
+        os.makedirs(attachments_dir, exist_ok=True)
+
+        # Generate the base filepath
+        filename:str = attachment.filename
+        if not filename.endswith(".json"):
+            return True
+        filepath = os.path.join(attachments_dir, filename)
+        # Check if the file already exists
+        if os.path.exists(filepath):
+            # Return the existing filepath if it exists
+            return filepath
+
+        # Save the new attachment if it doesn't exist
+        with open(filepath, 'wb') as f:
+            attachment_bytes = await attachment.read()
+            f.write(attachment_bytes)
+
+        return filepath
+
+async def get_pygmalion_json(uuid:str):
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(
+                url=f"https://server.pygmalion.chat/api/export/character/{uuid}/v2",
+                headers={
+                    "Content-Type": "application/json"
+                }
+            ) as response:
+                # Raise exception for bad HTTP status
+                response.raise_for_status()
+                result = await response.json()
+                print(str(result))
+                if result.get('character',None)!=None:
+                    try:
+                        data = result['character']
+                        filename = f"characters/{result['character']['data']['name']}.json"
+                        with open(filename, 'w') as file:
+                            json.dump(data, file, indent=4)
+                        return f"Dictionary successfully saved to {filename}"
+                    except Exception as e:
+                        print(f"An error occurred: {e}")
+                        return print(f"An error occurred: {e}")
+                else:
+                    return f"Error Reading File: {result['error']['message']}, Notify User That An Error Occured."
+    except aiohttp.ClientError as e:
+        print(f"Network error in LLM evaluation: {e}")
+    except (KeyError, ValueError) as e:
+        print(f"Parsing error in LLM response: {e}")
+    except Exception as e:
+        print(f"Unexpected error in LLM evaluation: {e}")
+    return None

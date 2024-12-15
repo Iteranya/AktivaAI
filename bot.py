@@ -21,6 +21,7 @@ from transformers import AutoProcessor, AutoModelForCausalLM
 import warnings
 from huggingface_hub import file_download
 import src.controller as controller
+import src.function as fun
 
 # Suppress the specific FutureWarning from huggingface_hub
 warnings.filterwarnings("ignore", category=FutureWarning, module="huggingface_hub.file_download")
@@ -113,6 +114,32 @@ def setup_commands():
     @group.command(name="get_text_eval_model", description="Change The Model Used to Evaluate Documents")
     async def aktiva_get_eval_model(interaction: discord.Interaction):
         await interaction.response.send_message(f"Model is {config.text_evaluator_model}", ephemeral=True)
+
+    @group.command(name="import_character", description="Import a Character JSON file")
+    async def aktiva_import_character(interaction: discord.Interaction, character_json: discord.Attachment):
+        try:
+            # Attempt to process the attachment
+            filepath = await fun.save_character_json(character_json)
+            await interaction.response.send_message(f"Character imported successfully and saved to: {filepath}", ephemeral=True)
+        except ValueError as e:
+            # Handle invalid file type errors
+            await interaction.response.send_message(f"Error: {e}", ephemeral=True)
+        except Exception as e:
+            # Catch all other exceptions to avoid crashing
+            await interaction.response.send_message(f"An unexpected error occurred: {e}", ephemeral=True)
+
+    @group.command(name="get_pygmalion", description="Import Pygmalion Character")
+    async def aktiva_import_pygmalion(interaction: discord.Interaction, character_uuid: str):
+        try:
+            # Attempt to process the attachment
+            filepath = await fun.get_pygmalion_json(character_uuid)
+            await interaction.response.send_message(f"{filepath}", ephemeral=True)
+        except ValueError as e:
+            # Handle invalid file type errors
+            await interaction.response.send_message(f"Error: {e}", ephemeral=True)
+        except Exception as e:
+            # Catch all other exceptions to avoid crashing
+            await interaction.response.send_message(f"An unexpected error occurred: {e}", ephemeral=True)
 
     tree.add_command(group)
 
