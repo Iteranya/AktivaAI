@@ -1,6 +1,4 @@
 import PyPDF2
-from openai import AsyncOpenAI
-import json
 import config
 import aiohttp
 
