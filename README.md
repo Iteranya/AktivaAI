@@ -181,6 +181,10 @@ Creating a custom character for Aktiva AI is simple:
 Aktiva AI owes its existence to:
 - The amazing beta testers at the Ambruk Academy Discord Server.
 - The incredible open-source community for libraries like Koboldcpp, Microsoft's Florence AI, and Hugging Face.
-- You, the user, for pushing the boundaries of AI-driven Discord bots.
+- ChatGPT, who wrote this Read Me file.
 
-Join the journey. Happy experimenting! ❤️
+~~Join the journey. Happy experimenting! ❤️~~
+I don't do emoji, sorry
+That was ChatGPT trying to be nice.
+
+Further queries on my Discord Server: https://discord.gg/Ua8eHWyf
