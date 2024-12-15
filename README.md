@@ -1,101 +1,186 @@
-# Aktiva AI - A Self Hosted AI Discord Bot
+# Aktiva AI - A Self-Hosted AI Discord Bot
+Your digital companion for managing and interacting with multiple AI personalities on Discord.
 
-## FEATURES!!!
+---
+
+## Table of Contents
+
+1. [Introduction](#introduction)
+2. [Features](#features)
+    - [Seamless Character Swapping](#seamless-character-swapping)
+    - [Channel-Based Memory](#channel-based-memory)
+    - [Thread Support](#thread-support)
+    - [Image Recognition](#image-recognition)
+    - [Character Message Editing and Deletion](#character-message-editing-and-deletion)
+    - [Customizable AI Characters](#customizable-ai-characters)
+    - [PDF File Reading Support](#pdf-file-reading-support)
+    - [Web Search Integration](#web-search-integration)
+    - [Whitelist Management](#whitelist-management)
+    - [OpenRouter API Integration](#openrouter-api-integration)
+    - [SillyTavern Character Compatibility](#sillytavern-character-compatibility)
+3. [Prerequisites](#prerequisites)
+4. [Installation Guide](#installation-guide)
+5. [Using the Bot](#using-the-bot)
+    - [Getting Started](#getting-started)
+    - [Slash Commands Guide](#slash-commands-guide)
+6. [Advanced Features](#advanced-features)
+    - [Changing Models](#changing-models)
+    - [Whitelist Management Commands](#whitelist-management-commands)
+7. [Character Creation Guide](#character-creation-guide)
+8. [Credit and Acknowledgements](#credit-and-acknowledgements)
+
+---
+
+## Introduction
+
+Aktiva AI is a versatile self-hosted Discord bot designed to enable users to interact seamlessly with multiple AI personalities in a single environment. Whether you're roleplaying, gathering information, looking for backup to support your argument, or just having fun, Aktiva AI leverages the latest advancements in AI technology through integrations like Hugging Face's Florence-2 Visual AI, OpenRouter APIs, and custom Language Model integration. With features ranging from dynamic character swapping to advanced memory systems, Aktiva AI is your go-to solution for creating an engaging AI-powered Discord server.
+
+---
+
+## Features
 
 ### Seamless Character Swapping
-- You only need to say a character's name or answer to their reply to trigger them!
-- /list to get the list of all available characters!!!
-- Call upon her name, 'Aktiva-chan' for the default built in AI that can explain how the Bot Works!!!
-- Use double slash `//` in the beginning of your message to hide it from the AI and context (the emoji still appears, but it won't reply)
-- All characters uses Webhooks! So different avatar for different name~ 
-- Adding character is as easy as making a json and putting them in the characters folder! (refer to character MD file please)
+Talk to multiple AI characters through one bot:
+- Easily trigger AI characters by saying their name or responding to their messages.
+- Use `/list` to pull up a list of available characters on the server.
+- Default AI, **Aktiva-chan**, can guide you through bot usage.
+- Hide messages from the AI's context by starting the message with `//`.
+- Each character uses webhooks for unique avatars, ensuring a personalized experience.
 
-### Channel Thread Memory and Location
-- Use slash command to manipulate Memory and Location
-- Memory is located before history context, location is located after history context
-- Each channel and thread has its own memory and location!!!
-- YES SUPPORTS THREADS!!! WOOOOOOOOOOOOOOOOO!!!!!
-- Get yourself a nice private thread with your own AI!!!
-- Mitochondria is the powerhouse of cell
+### Channel-Based Memory
+Aktiva AI remembers channel-specific memories and locations:
+- Each channel and thread has its own dedicated memory for an immersive interaction experience.
+- Slash commands can modify or clear memory and location segments dynamically.
 
-### Stable Multi-line Support
-- Uses some epic prompt enginneering to keep the AI stable (not that epic actually)
-- If character is made in the correct format, the AI shouldn't hallucinate much outside of their character
-- Supports both Assistant mode and Roleplay mode!!!
-- Can add line breaks, yes, ask your AI to write things past discord word limit too!
-- Very stable, no need to worry about the AI impersonating you!
-  
+### Thread Support
+Enjoy private or group interactions powered by full Discord thread support. Every thread has isolated memory management, allowing users to have private conversations or roleplaying sessions.
+
 ### Image Recognition
-- Uses the the finetune of Microsoft's Florence 2 AI [MiaoshouAI/Florence-2-base-PromptGen-v2.0](https://huggingface.co/MiaoshouAI/Florence-2-base-PromptGen-v2.0) for object recognition
-- ~~Uses Llava by default for vibe detection~~ Optional!!! Because not all LLM are Multimodal
-- Combined, this puppy can *almost* beat most Open Source Image detection out there! Recognizing the object and getting the vibe and aesthetic at the same time!
+Integrated with A Cultured Finetune Microsoft's Florence-2 AI [MiaoshouAI/Florence-2-base-PromptGen-v2.0](https://huggingface.co/MiaoshouAI/Florence-2-base-PromptGen-v2.0), Aktiva AI provides powerful multimodal capabilities:
+- Detect objects and aesthetics in uploaded images.
+- Support for optional AI like Llava for enhanced image-based vibe detection.
 
-### Character Text Edit and Deletion
-- Yes! You can edit your character's response like it's SillyTavern
-- Yes! You can delete your character's response!
-- No! You cannot regenerate character's response, I should really add that feature
+### Character Message Editing and Deletion
+For seamless content control:
+- Edit bot responses directly in Discord using context menu commands.
+- Delete bot responses to maintain moderation standards.
+
+### Customizable AI Characters
+Add unlimited characters to suit your needs:
+- Place character JSON files in the `characters/` folder.
+- SillyTavern's character card and Pygmalion AI card formats are fully supported for input.
+
+### PDF File Reading Support
+Upload PDF documents for AI characters to read, analyze, and provide insights during interactions.
+
+### Web Search Integration
+Powered by **DuckDuckGo**:
+- Allow your AI characters to perform live web searches.
+- Get accurate, real-time information during conversations.
+- Retrieve Images, Videos, and Get Newest Headlines.
+- Add `^` at the beginning of your message to enable web search function and `(keyword)` for the thing you want the AI to retrieve.
+
+### Whitelist Management
+Control which AI characters can respond in specific channels:
+- Assign whitelists to channels using slash commands.
+- Customize character availability per channel/thread for tailored interactions.
+
+### OpenRouter API Integration
+Expand the bot’s capabilities through OpenRouter:
+- Switch AI models via commands to experiment with different models.
+- Compatible with third-party AI providers.
+
+---
 
 ## Prerequisites
 
-### Large Language Model
-If you want to be cultured, you'll also need to download one of these bad boys~
+1. **Large Language Model (LLM)**
+   - Recommended models:
+     - [Stheno - Llama 8B Model](https://huggingface.co/Lewdiculous/L3-8B-Stheno-v3.1-GGUF-IQ-Imatrix)
+     - [Nyanade - Llama 7B Model](https://huggingface.co/Lewdiculous/Nyanade_Stunna-Maid-7B-v0.2-GGUF-IQ-Imatrix)
 
-- [Stheno - One of the best Llama 8B Model](https://huggingface.co/Lewdiculous/L3-8B-Stheno-v3.1-GGUF-IQ-Imatrix) <- The Most Stable One Yet
-- [Nyanade - One of the best Llama 7B Model](https://huggingface.co/Lewdiculous/Nyanade_Stunna-Maid-7B-v0.2-GGUF-IQ-Imatrix) <- 7B Model, Use At Your Own Risk
+2. **Backend - Koboldcpp**
+   - Install the backend framework: [Koboldcpp](https://github.com/LostRuins/koboldcpp)
 
-### Koboldcpp
-Requires Koboldcpp for back end, download it here:
-[Koboldcpp](https://github.com/LostRuins/koboldcpp)
+3. **Florence 2 Finetune for Vision Tasks**
+   - Preloaded with MiaoshouAI’s Florence-2-base for object recognition, text detection, and image compositional analysis.
 
-### Florence 2 Finetune
+4. **Config File**
+   - A `.env` file containing the necessary API keys for Discord and OpenRouter.
 
-- Microsoft New Visual AI
-- Finetuned to detect character appearance and image composition
-- Text Recognition too!!
- 
-### Additional configuration needed to run the bot
-- Discord API key in .env in the global variable
-- make new character json files in the characters folder
-- Or just, yknow, make lots and lots of character json file!!! Refer to characters/default.json for example
+---
 
+## Installation Guide
 
-## Instructions:
+1. Clone the Aktiva AI repository:
+    ```bash
+    git clone https://github.com/Iteranya/AktivaAI.git
+    cd AktivaAI
+    ```
 
-To run this bot:
+2. Create a `.env` file with the required API keys (refer to `example.env` in the repository).
 
-1. Load the LLM model of your choice in Koboldcpp (Make sure it's marked as not safe for audience)
-2. Download this repository [Aktiva AI](https://github.com/Iteranya/AktivaAI/)
-3. Make a .env file as written in example.env
-4. Install the requirements. I suggest using an Anaconda or Miniconda instance.
-    ```pip install -r requirements.txt```
-5. Run the bot with `python bot.py`
+3. Install Python dependencies:
+    ```bash
+    python3 -m pip install -r requirements.txt
+    ```
 
-## Character creation
+4. Launch your LLM using Koboldcpp and load the desired model.
 
-Refer to README.md file in the characters folder.
+5. Run the bot:
+    ```bash
+    python bot.py
+    ```
 
-## ToDo (From Top Priority to the Least Important):
+---
 
-- [x] Make a better README.
-- [x] Add Webhook Support for more seamless Avatar Change
-- [x] Fixed the Webhook not detecting reply, (hopefully I don't get rate limited)
-- [x] Refactor this whole entire mess...
-- [x] Redo the character trigger and swapping system with webhook.
-- [x] Implement GBNF for literal fucking Large Action Model feature.
-- [ ] [Add a nicer way to add the Large Action Model Feature](https://huggingface.co/facebook/bart-large-mnli)
-- [ ] Refactor this whole entire mess... AGAIN!!!
+## Using the Bot
 
-## Known Issue:
-- Terrible Documentation
-  - As in like, I did not make any proper Github Commit Comment :v
-  - Honestly this whole thing started as a joke, if you see the Read Me file, it's all just irony
-  - I never expected it to work this well
+### Getting Started
+After starting the bot:
+- Use `/help` for a quick tutorial on features and usage.
+- Add interesting characters or experiments by placing JSON files in the `characters/` folder.
 
-Yeah that's all the current issue. Let me know if there's another one, have fun then~
+### Slash Commands Guide
+Leverage the available commands to manipulate or customize the bot:
+- `/list`: View all available characters.
+- `/set_instruction`: Modify instructions for a specific AI character.
+- `/set_global`: Change global data for the channel/thread.
+- `/set_instruction`: Change the instruction data for the channel/thread.
+- `/set_whitelist`: Add characters to a channel’s whitelist.
+- `/clear_whitelist`: Clear character restrictions in the channel.
 
-## Credits!
+---
 
-- Big thank you to @badgids for the fork (even though this has no resemblance to the original)\
-- All the Beta Tester at Ambruk Academy Discord Server
-- You <3
+## Advanced Features
 
+### Changing Models
+Aktiva AI supports swapping between models dynamically. Use `/set_text_eval_model` to change the underlying AI evaluation model and `/get_text_eval_model` to view the active model.
+
+### Whitelist Management Commands
+Control character availability across channels with the following:
+- `/set_whitelist`: Specify characters allowed in a channel.
+- `/get_whitelist`: List allowed characters in the current channel.
+- `/clear_whitelist`: Remove all channel-specific character restrictions.
+
+---
+
+## Character Creation Guide
+
+Creating a custom character for Aktiva AI is simple:
+1. JSON-based Configuration:
+   - Refer to the structure of `characters/default.json`
+2. SillyTavern and Pygmalion Character Cards:
+   - Drag and drop compatible json files into the `characters/` folder to enable them.
+   - Maximum Compatibility with Pygmalion AI Character Hub
+
+---
+
+## Credits and Acknowledgements
+
+Aktiva AI owes its existence to:
+- The amazing beta testers at the Ambruk Academy Discord Server.
+- The incredible open-source community for libraries like Koboldcpp, Microsoft's Florence AI, and Hugging Face.
+- You, the user, for pushing the boundaries of AI-driven Discord bots.
+
+Join the journey. Happy experimenting! ❤️
