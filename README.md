@@ -33,7 +33,7 @@ Your digital companion for managing and interacting with multiple AI personaliti
 
 ## Introduction
 
-Aktiva AI is a versatile self-hosted Discord bot designed to enable users to interact seamlessly with multiple AI personalities in a single environment. Whether you're roleplaying, automating tasks, or just having fun, Aktiva AI leverages the latest advancements in AI technology through integrations like Hugging Face's Florence-2 Visual AI, OpenRouter APIs, and custom Language Model integration. With features ranging from dynamic character swapping to advanced memory systems, Aktiva AI is your go-to solution for creating an engaging AI-powered Discord server.
+Aktiva AI is a versatile self-hosted Discord bot designed to enable users to interact seamlessly with multiple AI personalities in a single environment. Whether you're roleplaying, gathering information, looking for backup to support your argument, or just having fun, Aktiva AI leverages the latest advancements in AI technology through integrations like Hugging Face's Florence-2 Visual AI, OpenRouter APIs, and custom Language Model integration. With features ranging from dynamic character swapping to advanced memory systems, Aktiva AI is your go-to solution for creating an engaging AI-powered Discord server.
 
 ---
 
