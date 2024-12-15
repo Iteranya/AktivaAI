@@ -2,6 +2,7 @@ aiohttp==3.8.6
 discord.py==2.3.2
 duckduckgo_search==6.4.1
 huggingface_hub==0.26.2
+openai==1.57.4
 pandas==2.2.3
 Pillow==11.0.0
 PyPDF2==3.0.1
