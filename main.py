@@ -169,6 +169,10 @@ async def character_info():
     result_str = "\n".join([f"{name}: {info}" for name, info in character.items()])
     return result_str
 
+async def change_text_evaluator_model(model:str):
+    config.text_evaluator_model = model
+    
+
 async def get_bot():
     folder_path = "./characters"
     bot_dict = {}  # Dictionary to store bot name and info

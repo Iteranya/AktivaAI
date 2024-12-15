@@ -13,6 +13,7 @@ global immersive_mode
 global blacklist_mode
 global openrouter_token
 global safesearch
+global text_evaluator_model
 
 queue_to_process_everything = asyncio.Queue()
 
@@ -29,6 +30,7 @@ immersive_mode = True
 blacklist_mode = True
 openrouter_token =""
 safesearch=None
+text_evaluator_model = "google/gemini-flash-1.5-exp"
 
 intents: discord.Intents = discord.Intents.all()
 intents.message_content = True

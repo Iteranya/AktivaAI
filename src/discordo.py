@@ -5,6 +5,7 @@ import util
 import re
 from src.models import QueueItem
 from src.aicharacter import AICharacter
+import os
 class Discordo:
     def __init__(self, message:discord.Message):
         self.raw_message = message
@@ -23,7 +24,36 @@ class Discordo:
             return base64_image
         else:
             return None
+        
+    async def save_attachment(self):
+        if self.raw_message.attachments:
+            attachment = self.raw_message.attachments[0]
             
+            # Create the attachments directory if it doesn't exist
+            attachments_dir = os.path.join(os.getcwd(), 'attachments')
+            os.makedirs(attachments_dir, exist_ok=True)
+            
+            # Generate a unique filename to prevent overwriting
+            filename = attachment.filename
+            filepath = os.path.join(attachments_dir, filename)
+            
+            # Ensure unique filename by adding a counter if needed
+            counter = 1
+            while os.path.exists(filepath):
+                name, ext = os.path.splitext(filename)
+                filepath = os.path.join(attachments_dir, f"{name}_{counter}{ext}")
+                counter += 1
+            
+            # Save the attachment
+            with open(filepath, 'wb') as f:
+                attachment_bytes = await attachment.read()
+                f.write(attachment_bytes)
+            
+            return filepath
+        else:
+            return None
+        
+
     # Get Raw Message
     def get_raw_user_message(self):
         return self.raw_message
