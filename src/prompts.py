@@ -4,15 +4,16 @@ import discord
 import json
 from src.dimension import Dimension
 import util
+import config
 
 
 class PromptEngineer:
-    def __init__(self, bot:AICharacter, discordo:Discordo, dimension:Dimension, type:str = "local", llm_setting = "text-default.json"):
+    def __init__(self, bot:AICharacter, discordo:Discordo, dimension:Dimension, llm_setting = "text-default.json"):
         self.bot = bot
         self.discordo = discordo
         self.dimension = dimension
         self.api:dict = self.set_api(llm_setting)
-        self.type = type
+        self.type = config.llm_type
 
     async def create_text_prompt(self) -> str:
         jb = self.bot.instructions

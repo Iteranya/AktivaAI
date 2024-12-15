@@ -14,6 +14,7 @@ global blacklist_mode
 global openrouter_token
 global safesearch
 global text_evaluator_model
+global llm_type
 
 queue_to_process_everything = asyncio.Queue()
 
@@ -31,6 +32,7 @@ blacklist_mode = True
 openrouter_token =""
 safesearch=None
 text_evaluator_model = "google/gemini-flash-1.5-exp"
+llm_type = "local"
 
 intents: discord.Intents = discord.Intents.all()
 intents.message_content = True

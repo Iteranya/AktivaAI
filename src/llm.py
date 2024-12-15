@@ -33,36 +33,13 @@ class LlmApi:
         async with ClientSession(timeout=timeout, connector=connector) as session:
             try:
                 if self.model_type == "local":
-                    async with session.post(self.text_api["address"] + self.text_api["generation"], headers=self.text_api["headers"], data=self.queue.prompt) as response:
-                        if response.status == 200:
-                            try:
-                                json_response = await response.json()
-                                llm_response: str = self.clean_up(json_response)
-                                self.queue.result = llm_response
-                                return self.queue
-                            except json.decoder.JSONDecodeError as e:
-                                return await self.handle_error_response(e)
-                        else:
-                            print(f"HTTP request failed with status: {response.status}")
-                            return await self.handle_error_response(response.status)
-
+                    try:
+                        return await self.send_local()
+                    except Exception as e:
+                        return await self.send_remote()
                 elif self.model_type == "openrouter":
                     try:
-                        openai = OpenAI(
-                            base_url="https://openrouter.ai/api/v1",
-                            api_key=config.openrouter_token,  # Replace with your actual key
-                        )
-                        #print(self.queue.prompt)
-                        # Convert the JSON string to a Python dictionary
-                        prompt_dict = json.loads(self.queue.prompt)
-                        # Extract the prompt string
-                        prompt_string = prompt_dict['prompt']
-                        completion = await openai.chat.completions.create(
-                            model="meta-llama/llama-3.1-70b-instruct:free",
-                            messages=[{"role": "user", "content": prompt_string}]
-                        )
-                        self.queue.result = completion.choices[0].message.content
-                        return self.queue
+                        return await self.send_remote()
 
                     except Exception as e:
                         print(f"OpenAI API Error: {e}")
@@ -100,3 +77,37 @@ class LlmApi:
 
         return llm_message
     
+    async def send_local(self):
+        timeout = ClientTimeout(total=600)
+        connector = TCPConnector(limit_per_host=10)
+        async with ClientSession(timeout=timeout, connector=connector) as session:
+            if self.model_type == "local":
+                async with session.post(self.text_api["address"] + self.text_api["generation"], headers=self.text_api["headers"], data=self.queue.prompt) as response:
+                    if response.status == 200:
+                        try:
+                            json_response = await response.json()
+                            llm_response: str = self.clean_up(json_response)
+                            self.queue.result = llm_response
+                            return self.queue
+                        except json.decoder.JSONDecodeError as e:
+                            return await self.handle_error_response(e)
+                    else:
+                        print(f"HTTP request failed with status: {response.status}")
+                        return await self.handle_error_response(response.status)
+
+    async def send_remote(self):
+        openai = OpenAI(
+            base_url="https://openrouter.ai/api/v1",
+            api_key=config.openrouter_token,  # Replace with your actual key
+        )
+        #print(self.queue.prompt)
+        # Convert the JSON string to a Python dictionary
+        prompt_dict = json.loads(self.queue.prompt)
+        # Extract the prompt string
+        prompt_string = prompt_dict['prompt']
+        completion = await openai.chat.completions.create(
+            model="meta-llama/llama-3.1-70b-instruct:free",
+            messages=[{"role": "user", "content": prompt_string}]
+        )
+        self.queue.result = completion.choices[0].message.content
+        return self.queue
