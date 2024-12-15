@@ -38,7 +38,6 @@ class DocReader:
             return None
     
     async def llm_eval(self, 
-                       model="google/gemini-flash-1.5-exp", 
                        include_image_url=None):
         """
         Asynchronously evaluate text using OpenRouter API.
@@ -51,7 +50,7 @@ class DocReader:
             print("No text to evaluate")
             return None
         model = config.text_evaluator_model
-        self.text = f"[{self.text}] \n=====\n Write a summary of the text above in Markdown Format"
+        self.text = f"[{self.text}] \n=====\n Write a summary followed with a detailed analysis of the text above in Markdown Format"
         
         # Prepare messages payload
         messages = [{

@@ -31,7 +31,7 @@ immersive_mode = True
 blacklist_mode = True
 openrouter_token =""
 safesearch=None
-text_evaluator_model = "google/gemini-flash-1.5-exp"
+text_evaluator_model = "meta-llama/llama-3.1-70b-instruct:free"
 llm_type = "local"
 
 intents: discord.Intents = discord.Intents.all()
