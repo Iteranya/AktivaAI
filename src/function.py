@@ -5,7 +5,7 @@ import util
 import os
 import json
 import aiohttp
-
+import src.filemanager as filemanager
 
 async def get_reply(message: discord.Message, client: discord.Client):
     reply = ""
@@ -143,28 +143,62 @@ async def get_channel_whitelist(channel_name: str) -> list[str] | None:
     return None
 
 
-async def save_character_json(attachment:discord.Attachment):
+async def save_character_json(attachment: discord.Attachment) -> str:
+    """
+    Save a Discord attachment, extracting JSON if it's a PNG with embedded metadata.
+
+    Args:
+        attachment (discord.Attachment): The Discord attachment to process
+
+    Returns:
+        str: Descriptive string about the processing result
+    """
     # Create the attachments directory if it doesn't exist
+    attachments_dir = os.path.join(os.getcwd(), 'characters')
 
-        attachments_dir = os.path.join(os.getcwd(), 'characters')
-        os.makedirs(attachments_dir, exist_ok=True)
-
-        # Generate the base filepath
-        filename:str = attachment.filename
-        if not filename.endswith(".json"):
-            return True
+    # Generate the base filepath
+    filename: str = attachment.filename
+    
+    # Handle JSON files
+    if filename.lower().endswith(".json"):
         filepath = os.path.join(attachments_dir, filename)
+        
         # Check if the file already exists
         if os.path.exists(filepath):
-            # Return the existing filepath if it exists
-            return filepath
+            return f"JSON file {filename} already exists"
 
-        # Save the new attachment if it doesn't exist
+        # Save the new attachment
         with open(filepath, 'wb') as f:
             attachment_bytes = await attachment.read()
             f.write(attachment_bytes)
 
-        return filepath
+        return f"JSON file {filename} saved"
+
+    # # Handle PNG files
+    # if filename.lower().endswith(".png"):
+    #     filepath = os.path.join(attachments_dir, filename)
+        
+    #     # Check if the file already exists
+    #     if os.path.exists(filepath):
+    #         try:
+    #             # Attempt to extract JSON if the PNG exists
+    #             return filemanager.png_to_json(filepath)
+    #         except ValueError:
+    #             return f"PNG file {filename} already exists, no JSON found"
+
+    #     # Save the new attachment
+    #     with open(filepath, 'wb') as f:
+    #         attachment_bytes = await attachment.read()
+    #         f.write(attachment_bytes)
+
+    #     # Try to extract JSON after saving
+    #     try:
+    #         return filemanager.png_to_json(filepath)
+    #     except ValueError:
+    #         return f"PNG file {filename} saved, no JSON found"
+    
+    # If not a PNG or JSON
+    return f"Unsupported file type: {filename}"
 
 async def get_pygmalion_json(uuid:str):
     try:

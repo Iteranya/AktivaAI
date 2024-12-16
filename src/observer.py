@@ -26,20 +26,16 @@ async def bot_behavior(message: discord.Message, client: discord.Client) -> bool
         return True
     #If bot's were being replied
     if reply is not None and replied:
-        if botlist!=None:
-            for bot in list(botlist):
+            for bot in list(whitelist):
                 if str(replied[0])==bot:
                     if whitelist != None:
                         if bot in whitelist:
                             await bot_think(message, bot.lower())
-                        else: 
                             return True
-                    else:
-                        await bot_think(message, bot.lower())
-                    return True
+                    
         
     #The Fuzzy Logic Part~
-    elif message.webhook_id is None:
+    if message.webhook_id is None:
         text = message.content
         if text.startswith("//"):
             return True

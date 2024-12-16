@@ -115,12 +115,12 @@ def setup_commands():
     async def aktiva_get_eval_model(interaction: discord.Interaction):
         await interaction.response.send_message(f"Model is {config.text_evaluator_model}", ephemeral=True)
 
-    @group.command(name="import_character", description="Import a Character JSON file")
+    @group.command(name="import_character", description="Import a Character JSON / PNG file")
     async def aktiva_import_character(interaction: discord.Interaction, character_json: discord.Attachment):
         try:
             # Attempt to process the attachment
-            filepath = await fun.save_character_json(character_json)
-            await interaction.response.send_message(f"Character imported successfully and saved to: {filepath}", ephemeral=True)
+            result = await fun.save_character_json(character_json)
+            await interaction.response.send_message(f"Result: {result}", ephemeral=True)
         except ValueError as e:
             # Handle invalid file type errors
             await interaction.response.send_message(f"Error: {e}", ephemeral=True)
