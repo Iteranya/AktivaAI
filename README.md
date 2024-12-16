@@ -68,6 +68,8 @@ For seamless content control:
 ### Customizable AI Characters
 Add unlimited characters to suit your needs:
 - Place character JSON files in the `characters/` folder.
+- Or Use the /aktiva import_character command and input the json
+- Or Use the /aktiva pygmalion_import command and input the uuid
 - SillyTavern's character card and Pygmalion AI card formats are fully supported for input.
 
 ### PDF File Reading Support
