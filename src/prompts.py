@@ -14,6 +14,7 @@ class PromptEngineer:
         self.dimension = dimension
         self.api:dict = self.set_api(llm_setting)
         self.type = config.llm_type
+        self.stopping_string = []
 
     async def create_text_prompt(self) -> str:
         jb = self.bot.instructions
@@ -43,7 +44,7 @@ class PromptEngineer:
         data.update({"grammars": ""})
         data_string = json.dumps(data)
         data.update({"images": []})
-        
+        self.stopping_string = stopping_strings
         return data_string
     
     def set_api(self,config_file: str) -> dict:

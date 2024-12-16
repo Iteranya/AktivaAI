@@ -17,7 +17,7 @@
 		"do_sample": "False",
 		"max_length": 1024,
 		"max_tokens": 1024,
-		"max_context_length": 8192,
+		"max_context_length": 12288,
 		"genamt": 1095,
 		"temp": 1.20,
 		"top_k": 50,

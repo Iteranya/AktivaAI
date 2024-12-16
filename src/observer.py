@@ -28,10 +28,8 @@ async def bot_behavior(message: discord.Message, client: discord.Client) -> bool
     if reply is not None and replied:
             for bot in list(whitelist):
                 if str(replied[0])==bot:
-                    if whitelist != None:
-                        if bot in whitelist:
-                            await bot_think(message, bot.lower())
-                            return True
+                        await bot_think(message, bot.lower())
+                        return True
                     
         
     #The Fuzzy Logic Part~

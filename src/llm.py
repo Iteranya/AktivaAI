@@ -17,7 +17,7 @@ from src.aicharacter import AICharacter
 from src.dimension import Dimension
 from src.prompts import PromptEngineer
 import config
-from openai import OpenAI
+import aiohttp
 
 class LlmApi:
     def __init__(self, queue: QueueItem, prompt_engineer: PromptEngineer, inline=True):
@@ -36,6 +36,7 @@ class LlmApi:
                     try:
                         return await self.send_local()
                     except Exception as e:
+                        print(f"Something Went Wrong with Local, {e}, using Remote:")
                         return await self.send_remote()
                 elif self.model_type == "openrouter":
                     try:
@@ -96,18 +97,54 @@ class LlmApi:
                         return await self.handle_error_response(response.status)
 
     async def send_remote(self):
-        openai = OpenAI(
-            base_url="https://openrouter.ai/api/v1",
-            api_key=config.openrouter_token,  # Replace with your actual key
-        )
-        #print(self.queue.prompt)
-        # Convert the JSON string to a Python dictionary
-        prompt_dict = json.loads(self.queue.prompt)
-        # Extract the prompt string
-        prompt_string = prompt_dict['prompt']
-        completion = await openai.chat.completions.create(
-            model="meta-llama/llama-3.1-70b-instruct:free",
-            messages=[{"role": "user", "content": prompt_string}]
-        )
-        self.queue.result = completion.choices[0].message.content
-        return self.queue
+        model = config.text_evaluator_model
+         
+        # Prepare messages payload
+        messages = [{
+            "role": "user",
+            "content": [
+                {
+                    "type": "text",
+                    "text": self.queue.prompt,
+                    
+                }
+            ]
+        }]
+        
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.post(
+                    url="https://openrouter.ai/api/v1/chat/completions",
+                    headers={
+                        "Authorization": f"Bearer {config.openrouter_token}",
+                        "Content-Type": "application/json"
+                    },
+                    json={
+                        "model": model,
+                        "messages": messages,
+                        "stop":self.prompt_engineer.stopping_string
+                    }
+                ) as response:
+                    # Raise exception for bad HTTP status
+                    response.raise_for_status()
+                    result = await response.json()
+                    print(str(result))
+                    if result.get('choices',None)!=None:
+                        self.queue.result = result['choices'][0]['message']['content']
+                        return self.queue
+                    else:
+                        self.queue.error =  f"Error Occured: {result['error']['message']}"
+                        return self.queue
+        except aiohttp.ClientError as e:
+            print(f"Network error in LLM evaluation: {e}")
+            self.queue.error =  f"Error Occured: {e}"
+            return self.queue
+        except (KeyError, ValueError) as e:
+            print(f"Parsing error in LLM response: {e}")
+            self.queue.error =  f"Error Occured: {e}"
+            return self.queue            
+        except Exception as e:
+            print(f"Unexpected error in LLM evaluation: {e}")
+            self.queue.error =  f"Error Occured: {e}"
+            return self.queue        
+        return None

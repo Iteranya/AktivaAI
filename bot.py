@@ -31,12 +31,14 @@ warnings.filterwarnings("ignore", category=UserWarning, module="torch.utils")
 load_dotenv()
 discord_token: str | None = os.getenv("DISCORD_TOKEN")
 openrouter_token: str | None = os.getenv("OPENROUTER_TOKEN")
+gemini_token:str |None = os.getenv("GEMINI_TOKEN")
 if discord_token is None:
     raise RuntimeError("$DISCORD_TOKEN env variable is not set!")
 if openrouter_token is None:
     openrouter_token=""
 client = config.client
 config.openrouter_token = openrouter_token
+config.gemini_token = gemini_token
 
 def fixed_get_imports(filename: str | os.PathLike) -> list[str]:
     # if not str(filename).endswith("modeling_florence2.py"):

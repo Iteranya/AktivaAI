@@ -1,6 +1,8 @@
 import PyPDF2
 import config
 import aiohttp
+import google.generativeai as genai
+
 
 class DocReader:
     def __init__(self, path):
@@ -35,20 +37,29 @@ class DocReader:
             print(f"An unexpected error occurred: {e}")
             return None
     
-    async def llm_eval(self, 
-                       include_image_url=None):
-        """
-        Asynchronously evaluate text using OpenRouter API.
-        
-        :param model: OpenRouter model to use
-        :param include_image_url: Optional image URL for multimodal evaluation
-        :return: LLM response or None if error
-        """
+    async def llm_eval(self):
         if not self.text:
             print("No text to evaluate")
             return None
+        gemini_eval = await self.gemini_eval()
+        if gemini_eval==None:
+            return await self.router_eval()
+        else:
+            return gemini_eval
+
+    async def gemini_eval(self):
+        genai.configure(api_key=config.gemini_token)
+        model = genai.GenerativeModel("gemini-1.5-flash")
+        response = await model.generate_content_async(f"[{self.text}] \n=====\n Write a summary followed with a detailed analysis of the text above in Markdown Format")
+
+        return response.text
+
+    async def router_eval(self, 
+                       include_image_url=None):
+
+        
         model = config.text_evaluator_model
-        self.text = f"[{self.text}] \n=====\n Write a summary followed with a detailed analysis of the text above in Markdown Format"
+        final_prompt = f"[{self.text}] \n=====\n Write a summary followed with a detailed analysis of the text above in Markdown Format"
         
         # Prepare messages payload
         messages = [{
@@ -56,7 +67,7 @@ class DocReader:
             "content": [
                 {
                     "type": "text",
-                    "text": self.text
+                    "text": final_prompt
                 }
             ]
         }]

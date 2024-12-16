@@ -15,6 +15,7 @@ global openrouter_token
 global safesearch
 global text_evaluator_model
 global llm_type
+global gemini_token
 
 queue_to_process_everything = asyncio.Queue()
 
@@ -30,8 +31,10 @@ image_api: dict = {}
 immersive_mode = True
 blacklist_mode = True
 openrouter_token =""
+gemini_token=""
 safesearch=None
 text_evaluator_model = "meta-llama/llama-3.1-70b-instruct:free"
+
 llm_type = "local"
 
 intents: discord.Intents = discord.Intents.all()
