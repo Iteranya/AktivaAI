@@ -115,7 +115,7 @@ def setup_commands():
     async def aktiva_get_eval_model(interaction: discord.Interaction):
         await interaction.response.send_message(f"Model is {config.text_evaluator_model}", ephemeral=True)
 
-    @group.command(name="import_character", description="Import a Character JSON / PNG file")
+    @group.command(name="import_character", description="Import a Character JSON file")
     async def aktiva_import_character(interaction: discord.Interaction, character_json: discord.Attachment):
         try:
             # Attempt to process the attachment
