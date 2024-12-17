@@ -89,8 +89,13 @@ Control which AI characters can respond in specific channels:
 
 ### OpenRouter API Integration
 Expand the bot’s capabilities through OpenRouter:
-- Switch AI models via commands to experiment with different models.
-- Compatible with third-party AI providers.
+- Switch AI models via slash commands to experiment with different models.
+- Uses OpenRouter as fall back when local don't work
+
+### Gemini API Integration
+Expand the bot's capability EVEN MORE with Gemini API:
+- Add the ability to process and absurd amount of text with free gemini api
+- Use the local model to answer it in an in-character manner
 
 ---
 
@@ -145,11 +150,10 @@ After starting the bot:
 
 ### Slash Commands Guide
 Leverage the available commands to manipulate or customize the bot:
-- `/list`: View all available characters.
 - `/set_instruction`: Modify instructions for a specific AI character.
 - `/set_global`: Change global data for the channel/thread.
 - `/set_instruction`: Change the instruction data for the channel/thread.
-- `/set_whitelist`: Add characters to a channel’s whitelist.
+- `/get_whitelist`: Get the available characters you can chat with
 - `/clear_whitelist`: Clear character restrictions in the channel.
 
 ---
@@ -172,9 +176,13 @@ Control character availability across channels with the following:
 Creating a custom character for Aktiva AI is simple:
 1. JSON-based Configuration:
    - Refer to the structure of `characters/default.json`
-2. SillyTavern and Pygmalion Character Cards:
-   - Drag and drop compatible json files into the `characters/` folder to enable them.
-   - Maximum Compatibility with Pygmalion AI Character Hub
+   - This is mandatory for 'assistant style' bot
+2. SillyTavern Character Cards:
+   - Use the /import command and add compatible json card
+   - Good for 'roleplay style' bot
+3. Pygmalion:
+   - Use get_pygmalion command and insert character uuid
+   - Easier access to Pygmalion coming up
 
 ---
 
@@ -189,4 +197,4 @@ Aktiva AI owes its existence to:
 I don't do emoji, sorry
 That was ChatGPT trying to be nice.
 
-Further queries on my Discord Server: https://discord.gg/Ua8eHWyf
+Further queries on my Discord Server: [Aktiva Institute](https://discord.gg/Apr4MTE3vm)
