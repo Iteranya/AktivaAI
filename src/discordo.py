@@ -37,11 +37,6 @@ class Discordo:
             filename = attachment.filename
             filepath = os.path.join(attachments_dir, filename)
 
-            # Check if the file already exists
-            if os.path.exists(filepath):
-                # Return the existing filepath if it exists
-                return filepath
-
             # Save the new attachment if it doesn't exist
             with open(filepath, 'wb') as f:
                 attachment_bytes = await attachment.read()
