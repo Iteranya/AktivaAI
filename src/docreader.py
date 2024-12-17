@@ -5,34 +5,48 @@ import google.generativeai as genai
 
 
 class DocReader:
-    def __init__(self, path):
+    def __init__(self, path, keyword=None):
         self.path = path
         self.text = self.pdf_to_text(path)
+        self.keyword= keyword
     
-    def pdf_to_text(self, pdf_path):
-        """
-        Extracts text from a PDF file.
-        Args:
-            pdf_path: The path to the PDF file.
-        Returns:
-            The extracted text as a string, or None if an error occurs.
-        """
+    def pdf_to_text(self, file_path):
         try:
-            with open(pdf_path, 'rb') as pdf_file:
-                pdf_reader = PyPDF2.PdfReader(pdf_file)
-                num_pages = len(pdf_reader.pages)
-                text = ""
-                for page_num in range(num_pages):
-                    page = pdf_reader.pages[page_num]
-                    text += page.extract_text()
-           
-            return text
+            # Check the file extension
+            if file_path.lower().endswith('.pdf'):
+                with open(file_path, 'rb') as pdf_file:
+                    pdf_reader = PyPDF2.PdfReader(pdf_file)
+                    num_pages = len(pdf_reader.pages)
+                    text = ""
+                    for page_num in range(num_pages):
+                        page = pdf_reader.pages[page_num]
+                        text += page.extract_text()
+                return text
+            
+            elif file_path.lower().endswith('.txt'):
+                with open(file_path, 'r', encoding='utf-8') as txt_file:
+                    text = txt_file.read()
+                return text
+            
+            else:
+                print(f"Error: Unsupported file type. Please provide a PDF or TXT file.")
+                return None
+
         except FileNotFoundError:
-            print(f"Error: PDF file not found at {pdf_path}")
+            print(f"Error: File not found at {file_path}")
             return None
         except PyPDF2.errors.PdfReadError:
             print(f"Error: Could not read PDF. The file might be corrupted or encrypted.")
             return None
+        except UnicodeDecodeError:
+            # Try reading with a different encoding if UTF-8 fails
+            try:
+                with open(file_path, 'r', encoding='latin-1') as txt_file:
+                    text = txt_file.read()
+                return text
+            except Exception as e:
+                print(f"Error reading text file: {e}")
+                return None
         except Exception as e:  # Catch other potential errors
             print(f"An unexpected error occurred: {e}")
             return None
@@ -49,8 +63,12 @@ class DocReader:
 
     async def gemini_eval(self):
         genai.configure(api_key=config.gemini_token)
-        model = genai.GenerativeModel("gemini-1.5-flash")
-        response = await model.generate_content_async(f"[{self.text}] \n=====\n Write a summary followed with a detailed analysis of the text above in Markdown Format")
+        model = genai.GenerativeModel("gemini-2.0-flash-exp")
+        prompt = f"[{self.text}] \n=====\n Write a summary followed with a detailed analysis of the text above in Markdown Format. If it's a work of fiction/story, highlight the overall story, plot, narrative, worldbuilding, and characters. If it's a formal document, highlight the background, the methodology if any, the details, and results if any."
+        if self.keyword!=None:
+            prompt = f"[{self.text}] \n=====\n Write a summary of the text above in Markdown Format. If it's a work of fiction/story, highlight the overall story, plot, narrative, worldbuilding, and characters. If it's a formal document, highlight the background, the methodology if any, the details, and results if any."
+            prompt = f"{prompt}\n[Additional Note: {self.keyword}]"
+        response = await model.generate_content_async(prompt)
 
         return response.text
 
@@ -59,8 +77,9 @@ class DocReader:
 
         
         model = config.text_evaluator_model
-        final_prompt = f"[{self.text}] \n=====\n Write a summary followed with a detailed analysis of the text above in Markdown Format"
-        
+        final_prompt = f"[{self.text}] \n=====\n Write a summary followed with a detailed analysis of the text above in Markdown Format. If it's a work of fiction/story, highlight the overall story, plot, narrative, worldbuilding, and characters. If it's a formal document, highlight the background, the methodology if any, the details, and results if any."
+        if self.keyword!=None:
+            final_prompt = f"{final_prompt}\n[Additional Note: The Keyword/Theme/Concept/Character To Keep Track Of As Focal point: {self.keyword}]"
         # Prepare messages payload
         messages = [{
             "role": "user",

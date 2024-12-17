@@ -47,12 +47,12 @@ def fixed_get_imports(filename: str | os.PathLike) -> list[str]:
     if "flash_attn" in imports:
         imports.remove("flash_attn")
     return imports
-
-with patch("transformers.dynamic_module_utils.get_imports"):
-    config.florence = AutoModelForCausalLM.from_pretrained("MiaoshouAI/Florence-2-base-PromptGen-v2.0", 
-                                                        trust_remote_code=True)
-    config.florence_processor = AutoProcessor.from_pretrained("MiaoshouAI/Florence-2-base-PromptGen-v2.0", 
-                                                              trust_remote_code=True)
+if config.use_florence == True:
+    with patch("transformers.dynamic_module_utils.get_imports"):
+        config.florence = AutoModelForCausalLM.from_pretrained("MiaoshouAI/Florence-2-base-PromptGen-v2.0", 
+                                                            trust_remote_code=True)
+        config.florence_processor = AutoProcessor.from_pretrained("MiaoshouAI/Florence-2-base-PromptGen-v2.0", 
+                                                                trust_remote_code=True)
 tree = app_commands.CommandTree(client)
 
 def setup_commands():
@@ -116,6 +116,14 @@ def setup_commands():
     @group.command(name="get_text_eval_model", description="Change The Model Used to Evaluate Documents")
     async def aktiva_get_eval_model(interaction: discord.Interaction):
         await interaction.response.send_message(f"Model is {config.text_evaluator_model}", ephemeral=True)
+
+    @group.command(name="switch_model_type", description="Switch the Model Type")
+    async def aktiva_set_eval_model(interaction: discord.Interaction):
+        if config.llm_type == "local":
+            config.llm_type = "remote"
+        else:
+            config.llm_type = "local"
+        await interaction.response.send_message(f"Model uses {config.llm_type} by default now", ephemeral=True)
 
     @group.command(name="import_character", description="Import a Character JSON file")
     async def aktiva_import_character(interaction: discord.Interaction, character_json: discord.Attachment):

@@ -38,7 +38,7 @@ class LlmApi:
                     except Exception as e:
                         print(f"Something Went Wrong with Local, {e}, using Remote:")
                         return await self.send_remote()
-                elif self.model_type == "openrouter":
+                elif self.model_type == "remote":
                     try:
                         return await self.send_remote()
 

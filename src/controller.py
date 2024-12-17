@@ -69,7 +69,8 @@ async def send_multimodal_message(bot: AICharacter,discordo: Discordo,dimension:
         print("Multimodal Processing...")
         additional = ""
         if file!=None:
-            reader = DocReader(file)
+            keyword = re.search(r"\((.*?)\)", discordo.get_user_message_content())
+            reader = DocReader(file,keyword)
             additional = await reader.llm_eval()
         else:
             additional = await multimodal.read_image()

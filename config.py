@@ -21,7 +21,7 @@ queue_to_process_everything = asyncio.Queue()
 
 florence = None
 florence_processor = None
-
+use_florence = True
 bot_display_name = "Aktiva-AI"
 bot_default_avatar = "https://i.imgur.com/cWExeMh.jpeg"
 

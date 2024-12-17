@@ -5,6 +5,7 @@ import json
 from src.dimension import Dimension
 import util
 import config
+import re
 
 
 class PromptEngineer:
@@ -24,8 +25,14 @@ class PromptEngineer:
         locationvar = self.dimension.getDict().get("location", "")
         instructionvar = self.dimension.getDict().get("instruction", "")
         history = self.discordo.history
-        user  = self.discordo.get_user_message_author_name()
-        prompt = character+globalvar +history +locationvar+ instructionvar + jb+f"\n[Replying to {user}] " + self.bot.name + ":"
+        content = re.sub(r'<@!?[0-9]+>', '', self.discordo.get_user_message_content().strip())
+        if content.startswith("^"):
+            content = content.replace("^","")
+        user = re.sub(r'[^\w]', '', self.discordo.get_user_message_author_name().strip())
+        last_message = f"[Reply]{user}: {content}[End]"
+        # history = history.replace(last_message,"")
+        
+        prompt = character+globalvar +history +locationvar +instructionvar + jb+f"\n[Replying to {user}] " + self.bot.name + ":"
 
         stopping_strings = ["[System", "(System", user + ":",  "[Reply", "(Reply", "System Note", "[End","[/"] 
         
@@ -36,9 +43,9 @@ class PromptEngineer:
         
         data.update({"prompt": prompt})
         data.update({"stop_sequence": stopping_strings})
-        image_data = await self.discordo.process_attachment()
-        if image_data!=None:
-            data.update({"images":[image_data]})
+        # image_data = await self.discordo.process_attachment()
+        # if image_data!=None:
+        #     data.update({"images":[image_data]})
         data.update({"grammar": ""})
         data.update({"grammar_string": ""})
         data.update({"grammars": ""})
