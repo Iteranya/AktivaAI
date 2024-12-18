@@ -3,11 +3,13 @@ discord.py==2.3.2
 duckduckgo_search==6.4.1
 huggingface_hub==0.26.2
 pandas==2.2.3
-Pillow==9.5.0
 Pillow==11.0.0
 protobuf==5.29.1
 PyPDF2==3.0.1
 python-dotenv==1.0.1
-torch==2.3.1+cu121
+torch==2.3.1
 transformers==4.46.3
 google.generativeai
+numpy<2
+einops
+timm
