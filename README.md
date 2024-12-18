@@ -42,8 +42,7 @@ Aktiva AI is a versatile self-hosted Discord bot designed to enable users to int
 ### Seamless Character Swapping
 Talk to multiple AI characters through one bot:
 - Easily trigger AI characters by saying their name or responding to their messages.
-- Use `/list` to pull up a list of available characters on the server.
-- Default AI, **Aktiva-chan**, can guide you through bot usage.
+- Use `/get_whitelist` to pull up a list of available characters on the server.
 - Hide messages from the AI's context by starting the message with `//`.
 - Each character uses webhooks for unique avatars, ensuring a personalized experience.
 
@@ -124,20 +123,27 @@ Expand the bot's capability EVEN MORE with Gemini API:
     git clone https://github.com/Iteranya/AktivaAI.git
     cd AktivaAI
     ```
+2. Create a virtual environment:
+    ```bash
+    python3 -m venv venv
+    source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+    ```
+3. Create a `.env` file with the required API keys (refer to `example.env` in the repository).
 
-2. Create a `.env` file with the required API keys (refer to `example.env` in the repository).
-
-3. Install Python dependencies:
+4. Install Python dependencies:
     ```bash
     python3 -m pip install -r requirements.txt
     ```
 
-4. Launch your LLM using Koboldcpp and load the desired model.
+5. Launch your LLM using Koboldcpp and load the desired model.
 
-5. Run the bot:
+6. Run the bot:
     ```bash
     python bot.py
     ```
+7. Whitelist the default bot:
+   `/set_whitelist Vida-chan`
+   Talk to Vida~
 
 ---
 
