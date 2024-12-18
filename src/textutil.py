@@ -40,7 +40,7 @@ def remove_last_word_before_final_colon(text: str) -> str:
     return result.strip()  # Remove any leading or trailing whitespace
 
 def remove_string_before_final(data: str) -> str:
-    substrings = ["[/","[System", "[SYSTEM", "[Reply", "[REPLY", "(System", "(SYSTEM","[End]","[End"]
+    substrings = ["[/","[System", "[SYSTEM", "[Reply", "[REPLY", "(System", "(SYSTEM","[End]","[End", "<|im_start|", "<|im_start|>", "<|im_end|>", "<|im_end|"]
     
     for substr in substrings:
         if data.endswith(substr):

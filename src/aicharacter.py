@@ -84,9 +84,10 @@ class AICharacter:
 
         for example in examples:
             if example.startswith("[System"):
+                example = f"<|im_start|>system\n{example}\n<|im_end|>"
                 pass
             else:
-                example = f"[Reply] {example}"
+                example = f"<|im_start|> {example} \n<|im_end|>"
 
         # Example messages!
         character_prompt = character + " A history reference to your speaking quirks and behavior: " + \

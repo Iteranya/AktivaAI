@@ -157,16 +157,16 @@ class Discordo:
             
             content = re.sub(r'<@!?[0-9]+>', '', message.content)  # Remove user mentions
             if content.startswith("[System"):
-                history.append(content.strip())
+                history.append(f"<|im_start|>system\n{content.strip()}\n<|im_end|>")
             elif content.startswith("//"):
                 #do nothing
                 pass
             elif content.startswith("^"):
                 content = content.replace("^","")
-                history.append(f"[Reply]{sanitized_name}: {content.strip()}[End]")
+                history.append(f"<|im_start|>{sanitized_name}\n{content.strip()}\n<|im_end|>")
             else:
                 # Add the pseudonym function here
-                history.append(f"[Reply]{sanitized_name}: {content.strip()}[End]")
+                history.append(f"<|im_start|>{sanitized_name}\n{content.strip()}\n<|im_end|>")
                 
         # Reverse the order of the collected messages
         history.reverse()

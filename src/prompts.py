@@ -29,13 +29,13 @@ class PromptEngineer:
         if content.startswith("^"):
             content = content.replace("^","")
         user = re.sub(r'[^\w]', '', self.discordo.get_user_message_author_name().strip())
-        last_message = f"[Reply]{user}: {content}[End]"
+        last_message = f"<|im_start|>{user}\n{content}\n<|im_end|>"
         # history = history.replace(last_message,"")
         
-        prompt = character+globalvar +history +locationvar +instructionvar + jb+f"\n[Replying to {user}] " + self.bot.name + ":"
+        prompt = character+globalvar +history + "<|im_start|>system\n"+locationvar +instructionvar + jb+f"<|im_end|>\n<|im_start|>{self.bot.name}\n"
 
-        stopping_strings = ["[System", "(System", user + ":",  "[Reply", "(Reply", "System Note", "[End","[/"] 
-        
+        #stopping_strings = ["[System", "(System", user + ":",  "[Reply", "(Reply", "System Note", "[End","[/"] 
+        stopping_strings = ["<|im_end|>","<|im_start|>"] 
         stopping_strings = set(stopping_strings)
         stopping_strings = list(stopping_strings)
         data:dict = self.api
