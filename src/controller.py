@@ -53,6 +53,7 @@ async def think() -> None:
                     image_result = await bebek.get_image_link(safesearch)
             elif "video" in message_content:
                     video_result = await bebek.get_video_link()
+                    video_result = "[System Note: Attachment]\n"+video_result
             await send_grounded_message(bot,discordo,dimension,str(top_result),image_result,video_result)
         elif discordo.raw_message.attachments:
             if(config.florence):

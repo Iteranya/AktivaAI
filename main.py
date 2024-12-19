@@ -158,7 +158,7 @@ async def edit_message_context(interaction: discord.Interaction, message: discor
     if message.webhook_id!=None:
         await client.fetch_webhook(message.webhook_id)
         await interaction.response.send_modal(EditMessageModal(message))
-    await interaction.response.send_message("This isn't a bot's message, this is human's message")
+    await interaction.response.send_message("This isn't a bot's message, this is human's message",ephemeral=True)
 
 async def edit(message:discord.Message, webhook_id, new_content):
     print(webhook_id)
@@ -171,7 +171,7 @@ async def delete(message:discord.Message,interaction:discord.Interaction):
         await webhook.delete_message(message.id,thread=interaction.channel)
     else:
         await webhook.delete_message(message.id)
-    await interaction.response.send_message("Deleted~")
+    await interaction.response.send_message("Deleted~",ephemeral=True)
 
 async def character_info():
     character = await get_bot()
