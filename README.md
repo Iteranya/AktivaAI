@@ -151,8 +151,9 @@ Expand the bot's capability EVEN MORE with Gemini API:
 
 ### Getting Started
 After starting the bot:
-- Use `/help` for a quick tutorial on features and usage.
 - Add interesting characters or experiments by placing JSON files in the `characters/` folder.
+- Or Use the /aktiva import_character command and input the json
+- Or Use the /aktiva pygmalion_import command and input the uuid
 
 ### Slash Commands Guide
 Leverage the available commands to manipulate or customize the bot:
