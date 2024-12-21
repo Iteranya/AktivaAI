@@ -12,6 +12,8 @@ class Discordo:
         self.default_character_url = config.bot_default_avatar
         self.default_character_name = config.bot_display_name
         self.history=None
+        self.file = None
+        self.image = None
 
     async def process_attachment(self):
         if self.raw_message.attachments:
@@ -73,13 +75,21 @@ class Discordo:
             return channel
         else:
             return None
-    
-    async def send(self,bot,queue_item:QueueItem):
+        
+    async def add_reaction(self):
+        try:
+            await self.raw_message.add_reaction('✨')
+        except Exception as e:
+            print("Hi!")
+
+    async def remove_reaction(self):
         try:
             await self.raw_message.remove_reaction('✨',config.bot_user)
         except Exception as e:
             print("Hi!")
-      
+    
+    async def send(self,bot,queue_item:QueueItem):
+        self.remove_reaction()
         if queue_item.error:
             await self.send_as_system(queue_item)
         else:
@@ -140,6 +150,18 @@ class Discordo:
                 await webhook.send(content, username=username, avatar_url=avatar_url)
         return
 
+    async def initialize_everything(self):
+        await self.initialize_channel_history()
+        await self.initialize_attachment()
+    
+    async def initialize_attachment(self):
+        if self.raw_message.attachments:
+            if self.raw_message.attachments[0].filename.lower().endswith(('.jpg', '.jpeg', '.png', '.gif', '.webp')):
+                #self.image = await self.process_attachment()
+                pass
+            else:
+                self.file = await self.save_attachment()
+        
     async def initialize_channel_history(self, limit: int = 50):
         history = []
         channel:discord.TextChannel = self.get_channel()

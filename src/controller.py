@@ -14,6 +14,33 @@ from src.docreader import DocReader
 
 import traceback
 inline_comprehension = True
+
+
+class Controller:
+    def __init__(self, bot_name:str):
+        discordo:Discordo = None
+        bot:AICharacter = None
+        dimension:Dimension = None
+        file = None
+        images = None
+
+    async def think()->None:
+        while True:
+            content = await config.queue_to_process_everything.get()
+            discordo:Discordo = content["discordo"]
+            bot:AICharacter = content["bot"]
+            await discordo.initialize_everything()
+            dimension:Dimension = content["dimension"]
+
+
+
+
+
+
+
+
+
+
 async def think() -> None:
 
     while True:
@@ -23,20 +50,13 @@ async def think() -> None:
         await discordo.initialize_channel_history()
         dimension:Dimension = content["dimension"]
         file = None
-        try:
-            await discordo.raw_message.add_reaction('✨')
-        except Exception as e:
-            print("Hi!")
-        if discordo.raw_message.attachments:
-            if discordo.raw_message.attachments[0].filename.lower().endswith(('.jpg', '.jpeg', '.png', '.gif', '.webp')):
-                images = await discordo.process_attachment()
-            else:
-                file = await discordo.save_attachment()
+        discordo.add_reaction()
         message_content = discordo.get_user_message_content()
         safesearch='on'
         # if message_content.startswith(">"):
         #     await send_lam_message(bot,discordo,dimension)
         if message_content.startswith("//"):
+            # This shouldn't be necessary, but just in case
             pass
         elif message_content.startswith("^"):
             top_result = ""
