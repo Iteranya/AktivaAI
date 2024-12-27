@@ -1,6 +1,5 @@
 import re
 import config
-from duckduckgo_search import AsyncDDGS
 from src.discordo import Discordo
 from src.aicharacter import AICharacter
 from src.dimension import Dimension
