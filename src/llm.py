@@ -26,6 +26,7 @@ class LlmApi:
         self.inline_comprehension = inline
         self.text_api = prompt_engineer.api
         self.model_type = prompt_engineer.type  # Store the model type
+        self.bot = prompt_engineer.bot.bot_name
 
     async def send_to_model_queue(self) -> QueueItem:
         timeout = ClientTimeout(total=600)
@@ -114,10 +115,11 @@ class LlmApi:
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.post(
-                    url="https://openrouter.ai/api/v1/chat/completions",
+                    url="https://api.deepseek.com/chat/completions",
                     headers={
-                        "Authorization": f"Bearer {config.openrouter_token}",
-                        "Content-Type": "application/json"
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer sk-ce294b13f17c4ebcb91f4c7445df31dd'
                     },
                     json={
                         "model": model,

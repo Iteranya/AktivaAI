@@ -87,6 +87,7 @@ class Discordo:
         
     async def send_as_bot(self,queue_item:QueueItem,bot: AICharacter):
         response = queue_item.result
+        response.replace(bot.name+":","")
         response_chunks = [response[i:i+1500] for i in range(0, len(response), 1500)]
 
         character_name = bot.name  # Placeholder for character name

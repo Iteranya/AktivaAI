@@ -33,7 +33,7 @@ blacklist_mode = True
 openrouter_token =""
 gemini_token=""
 safesearch=None
-text_evaluator_model = "meta-llama/llama-3.1-70b-instruct:free"
+text_evaluator_model = "deepseek-chat"
 
 llm_type = "local"
 
