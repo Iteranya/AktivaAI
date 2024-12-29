@@ -15,18 +15,8 @@ from dotenv import load_dotenv
 import src.observer as observer
 
 import main
-from unittest.mock import patch
-from transformers.dynamic_module_utils import get_imports
-from transformers import AutoProcessor, AutoModelForCausalLM 
-import warnings
-from huggingface_hub import file_download
 import src.controller as controller
 import src.function as fun
-
-# Suppress the specific FutureWarning from huggingface_hub
-warnings.filterwarnings("ignore", category=FutureWarning, module="huggingface_hub.file_download")
-warnings.filterwarnings("ignore", category=UserWarning, module="torch.utils")
-
 
 load_dotenv()
 discord_token: str | None = os.getenv("DISCORD_TOKEN")
@@ -40,19 +30,6 @@ client = config.client
 config.openrouter_token = openrouter_token
 config.gemini_token = gemini_token
 
-def fixed_get_imports(filename: str | os.PathLike) -> list[str]:
-    # if not str(filename).endswith("modeling_florence2.py"):
-    #     return get_imports(filename)
-    imports = get_imports(filename)
-    if "flash_attn" in imports:
-        imports.remove("flash_attn")
-    return imports
-if config.use_florence == True:
-    with patch("transformers.dynamic_module_utils.get_imports"):
-        config.florence = AutoModelForCausalLM.from_pretrained("MiaoshouAI/Florence-2-base-PromptGen-v2.0", 
-                                                            trust_remote_code=True)
-        config.florence_processor = AutoProcessor.from_pretrained("MiaoshouAI/Florence-2-base-PromptGen-v2.0", 
-                                                                trust_remote_code=True)
 tree = app_commands.CommandTree(client)
 
 def setup_commands():
