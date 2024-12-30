@@ -55,11 +55,8 @@ async def think() -> None:
                     video_result = "[System Note: Attachment]\n"+video_result
             await send_grounded_message(bot,discordo,dimension,str(top_result),image_result,video_result)
         elif discordo.raw_message.attachments:
-            if(config.florence):
                 multimodal = MultiModal(discordo)
                 await send_multimodal_message(bot,discordo,dimension,multimodal,file)
-            else:
-                await send_llm_message(bot,discordo,dimension)
         else:
             await send_llm_message(bot,discordo,dimension)
         config.queue_to_process_everything.task_done()
