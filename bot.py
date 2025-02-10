@@ -29,6 +29,7 @@ if openrouter_token is None:
 client = config.client
 config.openrouter_token = openrouter_token
 config.gemini_token = gemini_token
+config.bot_user
 
 tree = app_commands.CommandTree(client)
 

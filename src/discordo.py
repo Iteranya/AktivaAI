@@ -115,7 +115,7 @@ class Discordo:
             username = self.default_character_name
         webhook_list = await channel.webhooks()
         for webhook in webhook_list:
-            if webhook.name == "AktivaAI":
+            if webhook.name == config.bot_user.display_name:
                     if thread != None:
                         if images!=None:
                             await webhook.send(content, username=username, avatar_url=avatar_url, thread=thread,embeds=images)
@@ -128,7 +128,7 @@ class Discordo:
                         else:
                             await webhook.send(content, username=username, avatar_url=avatar_url)
                     return
-        webhook = await channel.create_webhook(name="AktivaAI")
+        webhook = await channel.create_webhook(name=config.bot_user.display_name)
         if thread!=None:
             if images!=None:
                 await webhook.send(content, username=username, avatar_url=avatar_url, thread=thread,files=images)
