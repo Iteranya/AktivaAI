@@ -54,10 +54,10 @@ Aktiva AI remembers channel-specific memories and locations:
 ### Thread Support
 Enjoy private or group interactions powered by full Discord thread support. Every thread has isolated memory management, allowing users to have private conversations or roleplaying sessions.
 
-### Image Recognition
-Integrated with A Cultured Finetune Microsoft's Florence-2 AI [MiaoshouAI/Florence-2-base-PromptGen-v2.0](https://huggingface.co/MiaoshouAI/Florence-2-base-PromptGen-v2.0), Aktiva AI provides powerful multimodal capabilities:
-- Detect objects and aesthetics in uploaded images.
-- Support for optional AI like Llava for enhanced image-based vibe detection.
+### ~~Image Recognition~~ Not Available In "Lite" Version
+~~Integrated with A Cultured Finetune Microsoft's Florence-2 AI [MiaoshouAI/Florence-2-base-PromptGen-v2.0](https://huggingface.co/MiaoshouAI/Florence-2-base-PromptGen-v2.0), Aktiva AI provides powerful multimodal capabilities:~~
+- ~~Detect objects and aesthetics in uploaded images.~~
+- ~~Support for optional AI like Llava for enhanced image-based vibe detection.~~
 
 ### Character Message Editing and Deletion
 For seamless content control:
