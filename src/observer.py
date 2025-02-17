@@ -33,7 +33,7 @@ async def bot_behavior(message: discord.Message, client: discord.Client) -> bool
                     
         
     #The Fuzzy Logic Part~
-    if message.webhook_id is None:
+    if message.webhook_id is None: # Check if it's a bot message
         text = message.content
         if text.startswith("//"):
             return True

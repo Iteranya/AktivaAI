@@ -1,7 +1,5 @@
 import re
 
-
-
 def clean_text(text:str):
     """
     Remove emojis, trailing whitespace, line breaks, and bracket-like characters from a given string.
