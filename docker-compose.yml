@@ -8,3 +8,8 @@ services:
       dockerfile: ./Dockerfile
     env_file:
         - .env
+    volumes:
+      - ./characters:/app/characters
+      - ./attachments:/app/attachments
+      - ./configurations:/app/configurations
+      - ./channels:/app/channels
