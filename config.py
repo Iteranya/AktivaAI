@@ -35,7 +35,7 @@ gemini_token=""
 safesearch=None
 text_evaluator_model = "deepseek-chat"
 
-llm_type = "openrouter"
+llm_type = "local"
 
 intents: discord.Intents = discord.Intents.all()
 intents.message_content = True

@@ -7,4 +7,5 @@ log.txt
 Pseudonym.json
 *.json
 !text-default.json
+!text-default-docker.json
 !default.json

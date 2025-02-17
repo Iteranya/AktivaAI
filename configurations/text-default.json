@@ -1,6 +1,6 @@
 {
 	"name": "koboldcpp",
-	"address": "http://localhost:5001/api/v1/",
+	"address": "http://host.docker.internal:5001/api/v1/",
 	"model": "model",
 	"generation": "generate",
 	"headers": {
