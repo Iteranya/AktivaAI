@@ -27,6 +27,7 @@ if discord_token is None:
 if openrouter_token is None:
     openrouter_token=""
 client = config.client
+util.initialize_data_directories()
 config.openrouter_token = openrouter_token
 config.gemini_token = gemini_token
 config.bot_user

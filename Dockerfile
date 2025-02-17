@@ -11,7 +11,7 @@ WORKDIR /app
 COPY . /app
 
 # Create directories if they don't exist
-RUN mkdir -p /app/characters /app/attachments /app/configurations
+RUN mkdir -p /app/characters /app/attachments /app/configurations /app/channels
 
 # Copy initial files
 COPY initial_data/characters/* /app/characters/
