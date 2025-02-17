@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   aidiscordbot:
-    image: aidiscordbot
+    image: artesparadox/aidiscordbot:latest
     build:
       context: .
       dockerfile: ./Dockerfile
