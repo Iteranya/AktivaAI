@@ -125,6 +125,7 @@ class LlmApi:
                         "stop":self.prompt_engineer.stopping_string
                     }
                 ) as response:
+                    print(config.openrouter_token)
                     # Raise exception for bad HTTP status
                     response.raise_for_status()
                     result = await response.json()

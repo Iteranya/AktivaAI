@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  aidiscordbot:
+    image: artesparadox/aktiva-main:latest
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    env_file:
+        - .env
+    volumes:
+      - ./characters:/app/characters
+      - ./attachments:/app/attachments
+      - ./configurations:/app/configurations
+      - ./channels:/app/channels
