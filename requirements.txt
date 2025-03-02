@@ -13,3 +13,4 @@ google.generativeai
 numpy<2
 einops
 timm
+youtube_transcript_api
