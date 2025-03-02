@@ -8,6 +8,8 @@ from PIL import Image
 from typing import Any
 import io
 import datetime
+from pathlib import Path
+import shutil
 
 def clean_user_message(user_input: str) -> str:
     # Remove the bot's tag from the input since it's not needed.
@@ -106,3 +108,30 @@ def get_file_list(directory: str) -> list[str]:
 
     # Return either the list of files or a blank list.
     return files
+
+def initialize_data_directories():
+    """
+    Copy data files from initial_data to their respective directories.
+    Creates directories if they don't exist and copies all files from initial_data.
+    """
+    # Define the directories we need
+    data_dirs = ['characters', 'attachments', 'configurations']
+    base_dir = Path(os.path.dirname(os.path.abspath(__file__)))
+    
+    # Process each directory
+    for dir_name in data_dirs:
+        # Create target directory if it doesn't exist
+        target_dir = base_dir / dir_name
+        target_dir.mkdir(exist_ok=True)
+        
+        # Path to initial data
+        initial_data_dir = base_dir / 'initial_data' / dir_name
+        
+        if initial_data_dir.exists():
+            print(f"Copying files for {dir_name}...")
+            # Copy all files from initial_data directory
+            for file in initial_data_dir.glob('*'):
+                shutil.copy2(file, target_dir / file.name)
+                print(f"Copied {file.name} to {dir_name}/")
+        else:
+            print(f"Warning: No initial data found for {dir_name} at {initial_data_dir}")

@@ -29,6 +29,7 @@ warnings.filterwarnings("ignore", category=UserWarning, module="torch.utils")
 
 
 load_dotenv()
+util.initialize_data_directories()
 discord_token: str | None = os.getenv("DISCORD_TOKEN")
 openrouter_token: str | None = os.getenv("OPENROUTER_TOKEN")
 gemini_token:str |None = os.getenv("GEMINI_TOKEN")
