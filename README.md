@@ -108,19 +108,36 @@ Expand the bot's capability EVEN MORE with Gemini API:
 2. **Backend - Koboldcpp**
    - Install the backend framework: [Koboldcpp](https://github.com/LostRuins/koboldcpp)
 
-3. **Florence 2 Finetune for Vision Tasks**
-   - Preloaded with MiaoshouAI’s Florence-2-base for object recognition, text detection, and image compositional analysis.
-
-4. **Config File**
+3. **Config File**
    - A `.env` file containing the necessary API keys for Discord and OpenRouter.
+   - `docker-compose.yml` on the repo
+
+4. **Docker**
+   - Your flavor of Docker Manager
 
 ---
 
-## Installation Guide
+## Installation Guide The Easy and Recommended Way (docker)
+1. Clone the Main Branch Aktiva AI Repository (or just the `example.env` and `docker-compose.yml`
+   ```bash
+    git clone --branch main https://github.com/Iteranya/AktivaAI.git
+    cd AktivaAI
+    ```
+2. Create a `.env` file with the required API keys (refer to `example.env` in the repository)
+3. Launch your LLM using Koboldcpp and load the desired model.
+4. Run the docker
+   ```bash
+   docker compose up -d
+   ```
+5. Whitelist the default bot:
+   `/set_whitelist Vida-chan`
+   Talk to Vida-chan~
+
+## Installation Guide The Hard Way  (manual)
 
 1. Clone the Aktiva AI repository:
     ```bash
-    git clone https://github.com/Iteranya/AktivaAI.git
+    git clone --branch main https://github.com/Iteranya/AktivaAI.git
     cd AktivaAI
     ```
 2. Create a virtual environment:
@@ -144,7 +161,6 @@ Expand the bot's capability EVEN MORE with Gemini API:
 7. Whitelist the default bot:
    `/set_whitelist Vida-chan`
    Talk to Vida~
-
 ---
 
 ## Using the Bot
