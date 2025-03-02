@@ -109,10 +109,15 @@ def get_file_list(directory: str) -> list[str]:
     # Return either the list of files or a blank list.
     return files
 
+import os
+import shutil
+from pathlib import Path
+
 def initialize_data_directories():
     """
     Copy data files from initial_data to their respective directories.
     Creates directories if they don't exist and copies all files from initial_data.
+    Does not overwrite existing files.
     """
     # Define the directories we need
     data_dirs = ['characters', 'attachments', 'configurations']
@@ -131,7 +136,12 @@ def initialize_data_directories():
             print(f"Copying files for {dir_name}...")
             # Copy all files from initial_data directory
             for file in initial_data_dir.glob('*'):
-                shutil.copy2(file, target_dir / file.name)
-                print(f"Copied {file.name} to {dir_name}/")
+                target_file = target_dir / file.name
+                if not target_file.exists():  # Check if file already exists
+                    shutil.copy2(file, target_file)
+                    print(f"Copied {file.name} to {dir_name}/")
+                else:
+                    print(f"Skipped {file.name}, already exists in {dir_name}/")
         else:
             print(f"Warning: No initial data found for {dir_name} at {initial_data_dir}")
+
