@@ -111,12 +111,12 @@ def setup_commands():
         response = main.delete_whitelist(interaction,character_name)
         await interaction.response.send_message(response, ephemeral=True)
 
-    @group.command(name="set_text_eval_model", description="Change The Model Used to Evaluate Documents")
+    @group.command(name="set_text_eval_model", description="Change The Remote Model")
     async def aktiva_set_eval_model(interaction: discord.Interaction, model_name:str):
         main.change_text_evaluator_model(model_name)
         await interaction.response.send_message("Model Changed!!!\n\nI hope...", ephemeral=True)
 
-    @group.command(name="get_text_eval_model", description="Change The Model Used to Evaluate Documents")
+    @group.command(name="get_text_eval_model", description="Change The Remote")
     async def aktiva_get_eval_model(interaction: discord.Interaction):
         await interaction.response.send_message(f"Model is {config.text_evaluator_model}", ephemeral=True)
 
