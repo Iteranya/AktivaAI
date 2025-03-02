@@ -31,7 +31,8 @@ class PromptEngineer:
         user = re.sub(r'[^\w]', '', self.discordo.get_user_message_author_name().strip())
         last_message = f"[Reply]{user}: {content}[End]"
         # history = history.replace(last_message,"")
-        
+        if self.discordo.video_caption!=None:
+            history = history+self.discordo.video_caption
         prompt = character+globalvar +history +locationvar +instructionvar + jb+f"\n[Replying to {user}] " + self.bot.name + ":"
 
         stopping_strings = ["[System", "(System", user + ":",  "[Reply", "(Reply", "System Note", "[End","[/"] 

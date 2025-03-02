@@ -12,6 +12,7 @@ class Discordo:
         self.default_character_url = config.bot_default_avatar
         self.default_character_name = config.bot_display_name
         self.history=None
+        self.video_caption = None
 
     async def process_attachment(self):
         if self.raw_message.attachments:

@@ -10,7 +10,7 @@ from src.multimodal import MultiModal
 from src.duckduckgo import Bebek
 import src.textutil as textutil
 from src.docreader import DocReader
-
+from src import youtube
 import traceback
 inline_comprehension = True
 async def think() -> None:
@@ -19,6 +19,7 @@ async def think() -> None:
         content = await config.queue_to_process_everything.get()
         discordo:Discordo = content["discordo"]
         bot:AICharacter = content["bot"]
+        video_content = ""
         await discordo.initialize_channel_history()
         dimension:Dimension = content["dimension"]
         file = None
@@ -33,13 +34,17 @@ async def think() -> None:
                 file = await discordo.save_attachment()
         message_content = discordo.get_user_message_content()
         safesearch='on'
+        if youtube.contains_youtube_link(message_content):
+            print("Retrieving Video Data...")
+            video_content = youtube.get_youtube_video_info(message_content)
+            discordo.video_caption = f"[System Note: User Sent The Following Video: {video_content}]"
+            
         # if message_content.startswith(">"):
         #     await send_lam_message(bot,discordo,dimension)
         if message_content.startswith("//"):
             pass
         elif message_content.startswith("^"):
             top_result = ""
-            video_result = ""
             image_result = None
             bebek = Bebek(message_content)
             if "news" in message_content:
@@ -53,6 +58,7 @@ async def think() -> None:
             elif "video" in message_content:
                     video_result = await bebek.get_video_link()
                     video_result = "[System Note: Attachment]\n"+video_result
+                    
             await send_grounded_message(bot,discordo,dimension,str(top_result),image_result,video_result)
         elif discordo.raw_message.attachments:
             if(config.florence):

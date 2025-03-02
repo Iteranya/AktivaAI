@@ -7,7 +7,6 @@ from discord import Client
 import logging
 import argparse
 import config
-
 import util
 
 from discord import app_commands
@@ -28,11 +27,14 @@ warnings.filterwarnings("ignore", category=FutureWarning, module="huggingface_hu
 warnings.filterwarnings("ignore", category=UserWarning, module="torch.utils")
 
 
-load_dotenv()
+load_dotenv(override=True)
+os.environ["GOOGLE_AUTH_DISABLE_IMPLICIT"] = "true"
+os.environ["GOOGLE_CLOUD_DISABLE_AMBIENT"] = "true"
 util.initialize_data_directories()
 discord_token: str | None = os.getenv("DISCORD_TOKEN")
 openrouter_token: str | None = os.getenv("OPENROUTER_TOKEN")
 gemini_token:str |None = os.getenv("GEMINI_TOKEN")
+
 if discord_token is None:
     raise RuntimeError("$DISCORD_TOKEN env variable is not set!")
 if openrouter_token is None:
