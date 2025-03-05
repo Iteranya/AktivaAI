@@ -20,6 +20,7 @@ async def think() -> None:
         discordo:Discordo = content["discordo"]
         bot:AICharacter = content["bot"]
         video_content = ""
+        video_result = ""
         await discordo.initialize_channel_history()
         dimension:Dimension = content["dimension"]
         file = None
