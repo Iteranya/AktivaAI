@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aktiva AI - Your Self-Hosted AI Discord Companion</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #5865F2;
+            --primary-dark: #4752C4;
+            --secondary: #57F287;
+            --dark: #23272A;
+            --darker: #1e2124;
+            --light: #FFFFFF;
+            --gray: #99AAB5;
+            --dark-gray: #2C2F33;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background-color: var(--darker);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--light);
+            text-decoration: none;
+        }
+        
+        .logo i {
+            color: var(--primary);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            color: var(--gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--light);
+        }
+        
+        .cta-button {
+            background-color: var(--primary);
+            color: var(--light);
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        
+        .cta-button:hover {
+            background-color: var(--primary-dark);
+            color: var(--light);
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 80px 0;
+            text-align: center;
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            color: var(--gray);
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .secondary-button {
+            background-color: var(--dark-gray);
+            color: var(--light);
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        
+        .secondary-button:hover {
+            background-color: var(--darker);
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 80px 0;
+            background-color: var(--dark);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            font-size: 2.5rem;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background-color: var(--darker);
+            border-radius: 8px;
+            padding: 30px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+       
+        
+        /* Installation Section */
+        .installation {
+            padding: 80px 0;
+            background-color: var(--dark);
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--dark-gray);
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            border-bottom: 3px solid var(--primary);
+            color: var(--light);
+        }
+        
+        .tab-content {
+            display: none;
+            background-color: var(--darker);
+            padding: 30px;
+            border-radius: 8px;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        pre {
+            background-color: var(--dark-gray);
+            padding: 20px;
+            border-radius: 6px;
+            overflow-x: auto;
+            color: var(--light);
+            font-family: 'Courier New', Courier, monospace;
+            margin: 20px 0;
+        }
+        
+        /* Characters Section */
+        .characters {
+            padding: 80px 0;
+            background-color: var(--darker);
+        }
+        
+        .character-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .character-card {
+            background-color: var(--dark);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        
+        .character-card:hover {
+            transform: scale(1.03);
+        }
+        
+        .character-image {
+            height: 200px;
+            background-color: var(--dark-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+        
+        .character-info {
+            padding: 20px;
+        }
+        
+        .character-info h3 {
+            margin-bottom: 10px;
+        }
+        
+        .character-info p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--darker);
+            padding: 50px 0 20px;
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--light);
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .social-links a {
+            color: var(--gray);
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: var(--light);
+        }
+        
+        .copyright {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">
+                    <i class="fas fa-robot"></i>
+                    <span>Aktiva AI</span>
+                </a>
+                <div class="nav-links">
+                    <a href="#features">Features</a>
+                    <a href="#installation">Installation</a>
+                    <a href="#characters">Characters</a>
+                </div>
+                <a href="https://github.com/Iteranya/AktivaAI" class="cta-button">
+                    <i class="fab fa-github"></i> GitHub
+                </a>
+            </nav>
+        </div>
+    </header>
+    
+    <section class="hero">
+        <div class="container">
+            <h1>Your Self-Hosted AI Discord Companion</h1>
+            <p>Aktiva AI is a versatile self-hosted Discord bot designed to enable users to interact seamlessly with multiple AI personalities in a single environment.</p>
+            <div class="hero-buttons">
+                <a href="#installation" class="cta-button">
+                    <i class="fas fa-download"></i> Get Started
+                </a>
+                <a href="https://discord.gg/Apr4MTE3vm" class="secondary-button">
+                    <i class="fab fa-discord"></i> Join Discord
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Powerful Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <h3>Seamless Character Swapping</h3>
+                    <p>Talk to multiple AI characters through one bot with unique avatars and personalities for each interaction.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Channel-Based Memory</h3>
+                    <p>Each channel and thread has its own dedicated memory for an immersive interaction experience.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-image"></i>
+                    </div>
+                    <h3>Image Recognition</h3>
+                    <p>Integrated with Microsoft's Florence-2 AI for powerful multimodal capabilities and image analysis.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <h3>PDF Reading</h3>
+                    <p>Upload PDF documents for AI characters to read, analyze, and provide insights during interactions.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>Web Search</h3>
+                    <p>Powered by DuckDuckGo to perform live web searches and retrieve real-time information.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-sliders-h"></i>
+                    </div>
+                    <h3>Customizable Characters</h3>
+                    <p>Add unlimited characters with support for SillyTavern and Pygmalion AI character formats.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="installation" class="installation">
+        <div class="container">
+            <h2 class="section-title">Get Started in Minutes</h2>
+            
+            <div class="tabs">
+                <div class="tab active" onclick="openTab('docker')">Docker (Recommended)</div>
+                <div class="tab" onclick="openTab('manual')">Manual Installation</div>
+            </div>
+            
+            <div id="docker" class="tab-content active">
+                <h3>Easy Docker Installation</h3>
+                <p>The simplest way to get Aktiva AI up and running is using Docker. Just follow these steps:</p>
+                
+                <h4>1. Clone the repository</h4>
+                <pre>git clone --branch main https://github.com/Iteranya/AktivaAI.git
+cd AktivaAI</pre>
+                
+                <h4>2. Configure your environment</h4>
+                <p>Create a <code>.env</code> file based on the <code>example.env</code> provided in the repository.</p>
+                
+                <h4>3. Launch with Docker</h4>
+                <pre>docker compose up -d</pre>
+                
+                <h4>4. Whitelist the default character</h4>
+                <p>In your Discord server, use the command:</p>
+                <pre>/set_whitelist Vida-chan</pre>
+            </div>
+            
+            <div id="manual" class="tab-content">
+                <h3>Manual Installation</h3>
+                <p>For those who prefer manual setup, follow these steps:</p>
+                
+                <h4>1. Clone the repository</h4>
+                <pre>git clone --branch main https://github.com/Iteranya/AktivaAI.git
+cd AktivaAI</pre>
+                
+                <h4>2. Create a virtual environment</h4>
+                <pre>python3 -m venv venv
+source venv/bin/activate  # On Windows, use `venv\Scripts\activate`</pre>
+                
+                <h4>3. Install dependencies</h4>
+                <pre>python3 -m pip install -r requirements.txt</pre>
+                
+                <h4>4. Configure your environment</h4>
+                <p>Create a <code>.env</code> file based on the <code>example.env</code> provided.</p>
+                
+                <h4>5. Run the bot</h4>
+                <pre>python bot.py</pre>
+            </div>
+        </div>
+    </section>
+    
+    <section id="characters" class="characters">
+        <div class="container">
+            <h2 class="section-title">Meet the Characters</h2>
+            <p style="text-align: center; margin-bottom: 40px; max-width: 800px; margin-left: auto; margin-right: auto;">
+                Aktiva AI comes with default characters and supports importing any character in SillyTavern or Pygmalion format. Create your own or import existing ones for endless possibilities.
+            </p>
+            
+            <div class="character-grid">
+                <div class="character-card">
+                    <div class="character-image">
+                        <i class="fas fa-user-astronaut"></i>
+                    </div>
+                    <div class="character-info">
+                        <h3>Vida-chan</h3>
+                        <p>The default assistant character, helpful and knowledgeable about the bot's features.</p>
+                    </div>
+                </div>
+                
+                <div class="character-card">
+                    <div class="character-image">
+                        <i class="fas fa-user-ninja"></i>
+                    </div>
+                    <div class="character-info">
+                        <h3>Custom Characters</h3>
+                        <p>Import any character in SillyTavern or Pygmalion format for endless possibilities.</p>
+                    </div>
+                </div>
+                
+                <div class="character-card">
+                    <div class="character-image">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="character-info">
+                        <h3>Your Creations</h3>
+                        <p>Create your own characters with custom personalities, backstories, and behaviors.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 50px;">
+                <a href="#installation" class="cta-button">
+                    <i class="fas fa-magic"></i> Start Creating
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="#features">Features</a>
+                <a href="#installation">Installation</a>
+                <a href="#characters">Characters</a>
+                <a href="https://github.com/Iteranya/AktivaAI">GitHub</a>
+            </div>
+            
+            <div class="social-links">
+                <a href="https://discord.gg/Apr4MTE3vm"><i class="fab fa-discord"></i></a>
+                <a href="https://github.com/Iteranya/AktivaAI"><i class="fab fa-github"></i></a>
+            </div>
+            
+            <p class="copyright">© 2023 Aktiva AI. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <script>
+        function openTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.getElementsByClassName('tab-content');
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove('active');
+            }
+            
+            // Remove active class from all tabs
+            const tabs = document.getElementsByClassName('tab');
+            for (let i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove('active');
+            }
+            
+            // Show the selected tab content and mark tab as active
+            document.getElementById(tabName).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
